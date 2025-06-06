@@ -385,7 +385,9 @@ def main_menu():
                 4. See Your Stats
                 5. See Table Chips Remaining
                 6. Quit
-    ===============================================
+    -----------------------------------------------
+            Press Ctrl+C to quit at any time.      
+    ===============================================            
                 """, delay=0.02
             )
         while True:
@@ -394,9 +396,12 @@ def main_menu():
                 os.system('clear')
                 new_player()
                 new_tables()
+                save_tables()
                 progbar('Creating player and table data...')
                 player1=choose_player()
-                os.system('clear')
+                printslow('New player created! Returning to Main Menu')
+                sleep(1)
+                return main_menu()
             elif choice == '2' or 'continue' in choice.lower():
                 os.system('clear')
                 load_stats()
@@ -416,7 +421,7 @@ def main_menu():
             elif choice == '3' or 'rules' in choice.lower():
                 os.system('clear')
                 house_rules()
-                return
+                return main_menu()
             elif choice == '4' or 'see pla' in choice.lower():
                 progbar('Loading player stats...')
                 sleep(2)
@@ -535,9 +540,7 @@ def custom_quit():
     while True:
         printslow('Would you like to save your data?\n')
         save=input('Y/N: ')
-        if 'y' and 'n' in save.lower():
-            printslow('Please enter either Y or N.')
-        elif 'y' in save.lower(): 
+        if save.lower() == 'y': 
             try:
                 load_stats()
                 load_tables()
@@ -562,15 +565,17 @@ Enter your choice: """)
                         return main_menu()
                     elif err_ex == '2' or 'exit' in err_ex.lower(): 
                         printslow('\nThanks for playing, please start a new game next time you play!') 
-                        sleep(2) 
+                        sleep(2)
+                        os.system('clear') 
                         quit()
                     else: 
                         printslow('Invalid input, please try again.\n')
-        elif 'n' in save.lower():
+        elif save.lower() == 'n':
             printslow('Are you sure? ')
             check=input('Y/N: ')
-            if 'y' in check.lower(): return printslow('See you next time!\n'), os.system('clear'), quit()
-            if 'n' in check.lower(): continue
+            if check.lower() == 'y': return printslow('See you next time!\n'), os.system('clear'), quit()
+            elif check.lower() == 'n': continue
+            else: printslow('Please enter either Y or N')
         else: printslow('Please enter either Y or N')
 
 def meme(text,delay=0.05):
