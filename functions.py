@@ -330,12 +330,7 @@ def new_tables():
 
 def save_tables():
     with open(t_stats_json, 'w') as f:
-        try:
-            j.dump(table_stats[0], f, indent=4)
-        except IndexError:
-            printslow('No table data exists, please create a new player to initialise tables!')
-            sleep(1)
-            return main_menu()
+        j.dump(table_stats[0], f, indent=4)
 
 def load_tables():
     try:
@@ -344,10 +339,6 @@ def load_tables():
             table_stats.append(save)
     except j.decoder.JSONDecodeError:
         pass
-    except IndexError:
-        print('No tables exist, please start a new game to initialise tables!')
-        sleep(1)
-        return main_menu()
 
 def load_stats():
     """without this function, saves will not be carried over between multiple playthroughs, this loads all data in at the start of each session"""
@@ -357,24 +348,11 @@ def load_stats():
             player_stats.append(save)
     except j.decoder.JSONDecodeError:
         pass
-    except IndexError:
-        printslow('No player data found, please start a new game.')
-        sleep(1)
-        return main_menu()
-    except FileNotFoundError:
-        printslow('Error: File not Found. No player data exists. Please create a new player!')
-        sleep(1)
-        return main_menu()
 
 def save_stats():
     """saves all stats of all currently saved players"""
     with open(p_stats_json, 'w') as f:
-        try:
-            j.dump(player_stats[0], f, indent=4)
-        except IndexError:
-            printslow('No player data exists, please create or load a player!')
-            sleep(1)
-            return main_menu()
+        j.dump(player_stats[0], f, indent=4)
 
 def new_player():
         "saves new players data to the save file"
@@ -557,21 +535,16 @@ def custom_quit():
         save=input('Y/N: ')
         
         if 'y' in save.lower(): 
-            try:
-                load_stats()
-                load_tables()
-                save_stats()
-                save_tables()
-                progbar('Saving player data...\n',40)
-                sleep(2)
-                printslow('See you next time!')
-                sleep(2)
-                os.system('clear')
-                quit()
-            except IndexError:
-                printslow('Player data is corrupt or does not exist, please start a new game.')
-                sleep(1)
-                return main_menu()
+            load_stats()
+            load_tables()
+            save_stats()
+            save_tables()
+            progbar('Saving player data...\n',40)
+            sleep(2)
+            printslow('See you next time!')
+            sleep(2)
+            os.system('clear')
+            quit()
         elif 'n' in save.lower():
             printslow('Are you sure? ')
             check=input('Y/N: ')

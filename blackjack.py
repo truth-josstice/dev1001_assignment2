@@ -54,6 +54,10 @@ def mainloop():
         meme_error()
         sleep(1)
         return main_menu()
+    except FileNotFoundError:
+        printslow('Error: File not Found. No player data exists. Please create a new player!')
+        sleep(1)
+        return main_menu()
     except KeyboardInterrupt:
         os.system('clear')
         print('Exit without saving?')
