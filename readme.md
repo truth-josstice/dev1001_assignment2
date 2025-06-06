@@ -4,11 +4,13 @@ This is both my first Python project, and my first coding project ever! It is al
 ## Gameplay and Features
 Player and table data is either initialised through a new game, or loaded from JSON files to continue progress. There are multiple control flows and loops used to not only parse and create data, but to enable the player to play a realistic blackjack simulator! 
 Specific features and functions:
-- Save file creation: Creates new player data and tables with base stats in JSON format.
+- Save file creation: Creates new player data and tables with base stats in JSON format. 
 - Play poker: Loads in data from previous saved files, allows player to play at four different tables with different rulesets and bet limits. Individual tables have specific amounts of chips to be won.
 - Poker hands using customised asciicard function: Allows player cards to be displayed in line and calculated using CSV files.
 - "AI" and results: Many control flows for bet amounts, a rudimentary AI for the dealer, finally ammendments made to stat files to change player and table stats.
 - Error catching: multiple bespoke error handling methods.
+    - Please note, whilst I have accounted for most errors, some may still occur due to key combinations native to python.
+    - A file marked "newtables_DONOTDELETE.json" is an essential file. If this file is missing please re-clone or download from the remote repo. 
 
 ### System Requirements
 - Operating System - Linux, MacOS, Windows
