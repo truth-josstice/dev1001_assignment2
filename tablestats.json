@@ -3,7 +3,7 @@
         "name": "Low Roller's Table",
         "bank": 200,
         "max_bet": 20,
-        "min_bet": 1,
+        "min_bet": 5,
         "r17": "hit"
     },
     {

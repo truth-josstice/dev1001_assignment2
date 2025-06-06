@@ -1,9 +1,10 @@
-import colorama as co
 import csv as c
 import json as j
-import random as r
 import os
 import sys
+import art as a
+import colorama as co
+from rich import progress as p
 from time import sleep
 from playingcards import *
 
@@ -118,7 +119,6 @@ class Table():
         else:
             return total
         
-    
     def player_bet(self):
         bet = input("How much would you like to bet?: ")
         if self.player1.chips >= int(bet):
@@ -303,19 +303,21 @@ class Player():
         for key, value in kwargs.items():
             for x in player_stats:
                     x[key] += value
-        
-
+      
     def read_stats(self):
-        print(f"""============= Player Stats =============
-        Player: {self.name}
-        Current chip total: ${self.chips}
-        Total hands played: {self.hands}
-        Total hands won: {self.wins}
-        Total hands lost: {self.losses}
-        Total chips won: ${self.chip_won}
-        Total chips lost: ${self.chip_lost}
-========================================
-        """)
+        try:
+            print(f"""============= Player Stats =============
+            Player: {self.name}
+            Current chip total: ${self.chips}
+            Total hands played: {self.hands}
+            Total hands won: {self.wins}
+            Total hands lost: {self.losses}
+            Total chips won: ${self.chip_won}
+            Total chips lost: ${self.chip_lost}
+    ========================================
+            """)
+        except IndexError:
+            print("No player data exists, please create or load a player!")
 
 def new_tables():
     try:
@@ -328,7 +330,12 @@ def new_tables():
 
 def save_tables():
     with open(t_stats_json, 'w') as f:
-        j.dump(table_stats[0], f, indent=4)
+        try:
+            j.dump(table_stats[0], f, indent=4)
+        except IndexError:
+            printslow('No table data exists, please create a new player to initialise tables!')
+            sleep(1)
+            return main_menu()
 
 def load_tables():
     try:
@@ -337,6 +344,10 @@ def load_tables():
             table_stats.append(save)
     except j.decoder.JSONDecodeError:
         pass
+    except IndexError:
+        print('No tables exist, please start a new game to initialise tables!')
+        sleep(1)
+        return main_menu()
 
 def load_stats():
     """without this function, saves will not be carried over between multiple playthroughs, this loads all data in at the start of each session"""
@@ -346,11 +357,24 @@ def load_stats():
             player_stats.append(save)
     except j.decoder.JSONDecodeError:
         pass
+    except IndexError:
+        printslow('No player data found, please start a new game.')
+        sleep(1)
+        return main_menu()
+    except FileNotFoundError:
+        printslow('Error: File not Found. No player data exists. Please create a new player!')
+        sleep(1)
+        return main_menu()
 
 def save_stats():
     """saves all stats of all currently saved players"""
     with open(p_stats_json, 'w') as f:
-        j.dump(player_stats[0], f, indent=4)
+        try:
+            j.dump(player_stats[0], f, indent=4)
+        except IndexError:
+            printslow('No player data exists, please create or load a player!')
+            sleep(1)
+            return main_menu()
 
 def new_player():
         "saves new players data to the save file"
@@ -389,8 +413,7 @@ def main_menu():
             os.system('clear')
             new_player()
             new_tables()
-            printslow('Creating player and table data...')
-            sleep(2)
+            progbar('Creating player and table data...')
             player1=choose_player()
             os.system('clear')
         elif choice == '2' or 'continue' in choice.lower():
@@ -401,7 +424,7 @@ def main_menu():
             pch=input('(Y/N): ')
             while True:
                 if 'y' in pch.lower(): 
-                    printslow('Initialising player and table data...') 
+                    progbar('Initialising player and table data...') 
                     return load_tables()
                 elif 'n' in pch.lower(): 
                     printslow('Please select new game.\n')
@@ -414,7 +437,7 @@ def main_menu():
             house_rules()
             return
         elif choice == '4' or 'see pla' in choice.lower():
-            printslow('Loading player stats...')
+            progbar('Loading player stats...')
             sleep(2)
             os.system('clear')
             load_stats()
@@ -423,7 +446,7 @@ def main_menu():
             input('Press any key to return to Main Menu')
             return main_menu()
         elif choice == '5' or 'see tab' in choice.lower():
-            printslow("Loading chip data...")
+            progbar("Loading chip data...")
             sleep(0.5)
             os.system('clear')
             load_tables()
@@ -433,6 +456,7 @@ def main_menu():
             input('Press any key to return to Main Menu')
             return main_menu()
         elif choice == '6' or 'quit' in choice.lower():
+            os.system('clear')
             return custom_quit()
         else:
             printslow('Invalid selection, restarting from Main Menu')
@@ -508,6 +532,10 @@ def choose_player():
     player1=Player(*[x for x in player_stats[0].values()])
     return player1
 
+def progbar(desc,rng=30):
+    for i in p.track(range(rng), description=desc):
+        sleep(0.1)  # Simulate work being done
+
 def asciicards(filename, *lists) -> str:
     """ 
     Creates a side by side ASCII of two or more cards
@@ -527,87 +555,45 @@ def custom_quit():
     while True:
         printslow('Would you like to save your data?\n')
         save=input('Y/N: ')
+        
         if 'y' in save.lower(): 
-            save_stats()
-            save_tables()
-            printslow('Saving player data...\n')
-            sleep(2)
-            printslow('See you next time!')
-            sleep(2)
-            os.system('clear')
-            quit()
+            try:
+                load_stats()
+                load_tables()
+                save_stats()
+                save_tables()
+                progbar('Saving player data...\n',40)
+                sleep(2)
+                printslow('See you next time!')
+                sleep(2)
+                os.system('clear')
+                quit()
+            except IndexError:
+                printslow('Player data is corrupt or does not exist, please start a new game.')
+                sleep(1)
+                return main_menu()
         elif 'n' in save.lower():
             printslow('Are you sure? ')
             check=input('Y/N: ')
             if 'y' in check.lower(): return printslow('See you next time!\n'), os.system('clear'), quit()
             if 'n' in check.lower(): continue
 
-# """Code graveyard"""
-    # def split(self):
-    #     if self.p_cards[0].rank == self.p_cards[1].rank:
-    #         self.split1.append(self.p_cards[0])
-    #         self.s_cards = [x for x in self.split1]
-    #         self.s1 = [x.img for x in self.split1]
-    #         asciicards(player, *self.s1)
-    #         self.split2.append(self.p_cards[1])
-    #         self.scards1 = [x for x in self.split2]
-    #         self.s2 = [x.img for x in self.split2]
-    #         asciicards(player, *self.s2)
-    #     else:
-    #        print('Your hand is unable to be split.')
+def meme(text,delay=0.05):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        sleep(delay)
+    sleep(2)
+    for char in text:        
+        sys.stdout.write('\b')
+        sys.stdout.flush()
+        sleep(delay*1)
+    sleep(1)
 
-    # # class Hand(Deck):
-# #     def __init__():
-
-
-# class Player():
-#     def __init__(self, name, hands_played):
-#         self.name = name
-#         self.hands_played = hands_played
-#         self.chip_total = 0
-
-#     def add_chips(self, chips):
-#         self.chip_total += chips
-    
-#     def display_info(self):
-#     return f"Player: {self.name}.\n Total hands played: {self.hands_played}.\n Chip total: ${self.chip_total}.
-
-    # def dealer_hand(self):
-    #     """ASCII display function for dealer's hand in each game"""
-    #     self.d_cards = [x for x in self.d_hand]
-    #     self.d_score = self.scores(self.d_cards)
-    #     if len(self.d_cards) == 2:
-    #         self.cards = [self.d_cards[0].img, self.d_cards[1].img1]
-    #         print("=" * 20 + "Dealer Cards" + "=" * 20)
-    #         asciicards(dealer, *self.cards)
-    #         print(f'Dealer shows: {self.d_cards[0]}')  
-    #     elif len(self.d_cards) > 2:
-    #         self.cards = [x.img for x in self.d_hand]    
-    #         print("=" * 20 + "Dealer Cards" + "=" * 20)
-    #         asciicards(dealer, *self.cards)
-    #         print(f'Dealer score: {self.d_score}')        
-
-
-    # def player_hand(self):
-    #     """ASCII display function for player's hand in each game"""
-    #     self.p_cards = [x for x in self.hand]
-    #     self.p_score = self.scores(self.p_cards)
-    #     self.cards = [x.img for x in self.hand]     
-    #     print("=" * 20 + "Player Cards" + "=" * 20)
-    #     asciicards(player, *self.cards)
-    #     print(f'Player score: {self.p_score}')
-
-    # def dealer_hand(self):
-    #     """ASCII display function for dealer's hand in each game"""
-    #     self.d_cards = [x for x in self.d_hand]
-    #     self.d_score = self.scores(self.d_cards)
-    #     if len(self.d_cards) == 2:
-    #         self.cards = [self.d_cards[0].img, self.d_cards[1].img1]
-    #         print("=" * 20 + "Dealer Cards" + "=" * 20)
-    #         asciicards(dealer, *self.cards)
-    #         print(f'Dealer shows: {self.d_cards[0]}')  
-    #     elif len(self.d_cards) > 2:
-    #         self.cards = [x.img for x in self.d_hand]    
-    #         print("=" * 20 + "Dealer Cards" + "=" * 20)
-    #         asciicards(dealer, *self.cards)
-    #         print(f'Dealer score: {self.d_score}')        
+def meme_error():
+    a.aprint('confused3')
+    a.aprint('table flip')
+    a.aprint('cry')
+    print(co.Fore.RED + co.Style.BRIGHT + 'ERROR! ERROR! ' + co.Style.RESET_ALL)
+    meme('ALL YOUR BASE ARE BELONG TO US!')
+    printslow('Ahem... Sorry about that. Anyway, turns out your save data is corrupted or missing, would you kindly start a new game?')

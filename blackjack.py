@@ -9,7 +9,7 @@ def mainloop():
             os.system('clear')
             while True:
                 activetable = choose_table()
-                printslow('Loading your table...')
+                progbar('Loading your table...',40)
                 sleep(2)
                 os.system('clear')
                 activetable.t_rules()
@@ -50,6 +50,10 @@ def mainloop():
                     sleep(2)
                     os.system('clear')
                     continue
+    except IndexError:
+        meme_error()
+        sleep(1)
+        return main_menu()
     except KeyboardInterrupt:
         os.system('clear')
         print('Exit without saving?')
@@ -58,3 +62,4 @@ def mainloop():
         if 'n' in ex.lower(): printslow('Returning to Main Menu'), sleep(2), main_menu()
 
 mainloop()
+
