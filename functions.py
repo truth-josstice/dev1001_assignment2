@@ -605,3 +605,6 @@ def meme_error():
     for i in range(3):
         printslow('\nWould you kindly...',delay=0.06)
         sleep(0.5)
+    printslow("\nOkay, enough video game references, let's go back to the Main Menu already\n")
+    a.aprint('happy4')
+    sleep(0.5)
