@@ -2,10 +2,10 @@ import csv as c
 import json as j
 import os
 import sys
+from time import sleep
 import art as a
 import colorama as co
 from rich import progress as p
-from time import sleep
 from playingcards import *
 
 
