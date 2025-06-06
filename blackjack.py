@@ -60,8 +60,11 @@ def mainloop():
             os.system('clear')
             print('Exit without saving?')
             ex=input('Y/N: ')
-            if 'y' in ex.lower(): printslow('Exiting Blackjack. Thanks for playing!'), sleep(1), os.system('clear'), quit()
-            if 'n' in ex.lower(): printslow('Returning to Main Menu'), sleep(2), main_menu()
+            if 'y' in ex.lower(): printslow('\nExiting Blackjack. Thanks for playing!'), sleep(1), os.system('clear'), quit()
+            if 'n' in ex.lower(): printslow('\nReturning to Main Menu'), sleep(2), main_menu()
+        except: 
+            printslow("That's a little embarassing! An unexpected error has occured. Returning to main menu.")
+            sleep(1)
 
 mainloop()
 
