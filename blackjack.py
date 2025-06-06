@@ -1,7 +1,6 @@
 from functions import *
 
 
-
 def mainloop():
     try:
         while True:

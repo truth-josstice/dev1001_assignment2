@@ -433,24 +433,7 @@ def main_menu():
             input('Press any key to return to Main Menu')
             return main_menu()
         elif choice == '6' or 'quit' in choice.lower():
-            printslow('Thanks for playing!\n') 
-            while True:
-                printslow('Would you like to save your data?\n')
-                save=input('Y/N: ')
-                if 'y' in save.lower(): 
-                    save_stats()
-                    save_tables()
-                    printslow('Saving player data...\n')
-                    sleep(2)
-                    printslow('See you next time!')
-                    sleep(2)
-                    os.system('clear')
-                    quit()
-                elif 'n' in save.lower():
-                    printslow('Are you sure? ')
-                    check=input('Y/N: ')
-                    if 'y' in check.lower(): return printslow('See you next time!\n'), os.system('clear'), quit()
-                    if 'n' in check.lower(): continue
+            return custom_quit()
         else:
             printslow('Invalid selection, restarting from Main Menu')
             sleep(1)
@@ -538,6 +521,26 @@ def asciicards(filename, *lists) -> str:
         reader = c.reader(f)
         for row in reader:
             print("   ".join(row))
+
+def custom_quit():
+    printslow('Thanks for playing!\n') 
+    while True:
+        printslow('Would you like to save your data?\n')
+        save=input('Y/N: ')
+        if 'y' in save.lower(): 
+            save_stats()
+            save_tables()
+            printslow('Saving player data...\n')
+            sleep(2)
+            printslow('See you next time!')
+            sleep(2)
+            os.system('clear')
+            quit()
+        elif 'n' in save.lower():
+            printslow('Are you sure? ')
+            check=input('Y/N: ')
+            if 'y' in check.lower(): return printslow('See you next time!\n'), os.system('clear'), quit()
+            if 'n' in check.lower(): continue
 
 # """Code graveyard"""
     # def split(self):
