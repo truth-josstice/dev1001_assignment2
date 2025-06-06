@@ -8,13 +8,10 @@ import colorama as co
 from rich import progress as p
 from playingcards import *
 
-
-
 # sets up initial stats
 player_stats = []
 table_stats = []
 player_bet_list = []
-
 
 # variables for outside data files
 n_t_stats_json ='newtables.json'
@@ -307,7 +304,7 @@ class Player():
     def read_stats(self):
         try:
             print(f"""============= Player Stats =============
-            Player: {self.name}
+            Player: {self.name.title()}
             Current chip total: ${self.chips}
             Total hands played: {self.hands}
             Total hands won: {self.wins}
@@ -319,6 +316,7 @@ class Player():
         except IndexError:
             print("No player data exists, please create or load a player!")
 
+# global functions not tied to any class but may use class data
 def new_tables():
     try:
         with open(n_t_stats_json, 'r') as f:
@@ -355,17 +353,22 @@ def save_stats():
         j.dump(player_stats[0], f, indent=4)
 
 def new_player():
-        "saves new players data to the save file"
+        """saves new players data to the save file"""
         printslow('Are you sure you would like to start a new game? All previous save data will be deleted.\n',delay=0.03)
-        confirm=input('Confirm new player (Y or N)?: ')
-        if 'y' in confirm.lower():
-            name=input('Please enter a name for your player: ')
-            player_stats.clear()
-            player1 = Player(name)
-            player1.new_save()
-            return player1
-        if 'n' in confirm.lower():
-            return printslow('Returning to Main Menu.'), os.system('clear')
+        while True:
+            confirm=input('Confirm new player (Y or N)?: ')
+            if 'y' and 'n' in confirm.lower():
+                printslow("Please enter one choice only.\n")
+            elif 'y' in confirm.lower():
+                name=input('Please enter a name for your player: ')
+                player_stats.clear()
+                player1 = Player(name)
+                player1.new_save()
+                return player1
+            elif 'n' in confirm.lower():
+                printslow('Returning to Main Menu.'), os.system('clear')
+            else:
+                printslow("Please enter a valid choice: Y or N.\n")
 
 def printslow(text, delay=0.05):
   for char in text:
@@ -374,7 +377,6 @@ def printslow(text, delay=0.05):
     sleep(delay)
 
 def main_menu():
-    while True:
         os.system('clear')
         printslow("""    ============ Welcome to Blackjack! ============
                 1. New Game
@@ -386,87 +388,87 @@ def main_menu():
     ===============================================
                 """, delay=0.02
             )
-        choice = input('Please select an option: ')
-        if choice == '1' or 'new' in choice.lower():
-            os.system('clear')
-            new_player()
-            new_tables()
-            progbar('Creating player and table data...')
-            player1=choose_player()
-            os.system('clear')
-        elif choice == '2' or 'continue' in choice.lower():
-            os.system('clear')
-            load_stats()
-            player1=choose_player()
-            printslow(f'Continue your game as {player1.name.title()}? ')
-            pch=input('(Y/N): ')
-            while True:
-                if 'y' in pch.lower(): 
-                    progbar('Initialising player and table data...') 
-                    return load_tables()
-                elif 'n' in pch.lower(): 
-                    printslow('Please select new game.\n')
-                    sleep(0.5)
-                    input('Press any key to return to Main Menu.')
-                    return main_menu()
-                else: print('Invalid selection, please try again.')
-        elif choice == '3' or 'rules' in choice.lower():
-            os.system('clear')
-            house_rules()
-            return
-        elif choice == '4' or 'see pla' in choice.lower():
-            progbar('Loading player stats...')
-            sleep(2)
-            os.system('clear')
-            load_stats()
-            player1 = choose_player()
-            player1.read_stats()
-            input('Press any key to return to Main Menu')
-            return main_menu()
-        elif choice == '5' or 'see tab' in choice.lower():
-            progbar("Loading chip data...")
-            sleep(0.5)
-            os.system('clear')
-            load_tables()
-            for x in table_stats[0]:
-                printslow(f'{x['name']} chips remaining: ${x['bank']}\n',delay=0.03)
+        while True:
+            choice = input("Please select an option: ")
+            if choice == '1' or 'new' in choice.lower():
+                os.system('clear')
+                new_player()
+                new_tables()
+                progbar('Creating player and table data...')
+                player1=choose_player()
+                os.system('clear')
+            elif choice == '2' or 'continue' in choice.lower():
+                os.system('clear')
+                load_stats()
+                player1=choose_player()
+                printslow(f'Continue your game as {player1.name.title()}? ')
+                pch=input('(Y/N): ')
+                while True:
+                    if 'y' in pch.lower(): 
+                        progbar('Initialising player and table data...') 
+                        return load_tables()
+                    elif 'n' in pch.lower(): 
+                        printslow('Please select new game.\n')
+                        sleep(0.5)
+                        input('Press any key to return to Main Menu.')
+                        return main_menu()
+                    else: print('Invalid selection, please try again.')
+            elif choice == '3' or 'rules' in choice.lower():
+                os.system('clear')
+                house_rules()
+                return
+            elif choice == '4' or 'see pla' in choice.lower():
+                progbar('Loading player stats...')
+                sleep(2)
+                os.system('clear')
+                load_stats()
+                player1 = choose_player()
+                player1.read_stats()
+                input('Press any key to return to Main Menu')
+                return main_menu()
+            elif choice == '5' or 'see tab' in choice.lower():
+                progbar("Loading chip data...")
+                sleep(0.5)
+                os.system('clear')
+                load_tables()
+                for x in table_stats[0][:-1]:
+                    printslow(f'{x['name']} chips remaining: ${x['bank']}\n',delay=0.03)
+                printslow(f'{table_stats[0][3]['name']} has no limit! You can win as many chips as you like!\n')
                 sleep(0.3)
-            input('Press any key to return to Main Menu')
-            return main_menu()
-        elif choice == '6' or 'quit' in choice.lower():
-            os.system('clear')
-            return custom_quit()
-        else:
-            printslow('Invalid selection, restarting from Main Menu')
-            sleep(1)
-            return main_menu()
-
+                input('Press any key to return to Main Menu')
+                return main_menu()
+            elif choice == '6' or 'quit' in choice.lower():
+                os.system('clear')
+                return custom_quit()
+            else:
+                printslow('Invalid selection, please try again.\n')
+                
 def house_rules():
     printslow("""
 ================ The Casino of Truth and Josstice! ================
-                    House Rules
-            -------------------------
-- Dealer will stand on 18 or over regardless of the table
-- Depending on the table the dealer may hit or stand on 17
-- Hands cannot be split, this functionality is not 
-implemented in the current version of this app (v.0.1)
-- Player bets before deal, and can double down when hand 
-is dealt
-- If player hand beats dealer hand by 1 the player's hand wins
-- Player Blackjack pays 1.5x the value of the player's bet
-- Player cannot beat a dealer Blackjack! 
-- 5 Card Stud (5 cards under 21) is scored as a regular 
-hand with no advantage to the player
+                        House Rules
+-------------------------------------------------------------------
+    - Dealer will stand on 18 or over regardless of the table
+    - Depending on the table the dealer may hit or stand on 17
+    - Hands cannot be split, this functionality is not 
+      implemented in the current version of this app (v.0.1)
+    - Player bets before deal, and can double down when hand 
+      is dealt
+    - If player hand beats dealer hand by 1 the player's hand wins
+    - Player Blackjack pays 1.5x the value of the player's bet
+    - Player cannot beat a dealer Blackjack! 
+    - 5 Card Stud (5 cards under 21) is scored as a regular 
+      hand with no advantage to the player
 
-                   Gameplay Rules    
-            -------------------------
-- Three tables have a finite number of chips to win, once
-the table has none left, you have beaten that table! You can check
-these chip totals from the main menu.
-- The no limit table is a high risk high reward table, players
-can aim to increase their chip total exponentially here.
-- If players lose all of their chips, they must return to the
-Main Menu and start a new game!
+                       Gameplay Rules    
+-------------------------------------------------------------------
+    - Three tables have a finite number of chips to win, once
+      the table has none left, you have beaten that table! You can 
+      check these chip totals from the main menu.
+    - The no limit table is a high risk high reward table, players
+      can aim to increase their chip total exponentially here.
+    - If players lose all of their chips, they must return to the
+      Main Menu and start a new game!
 ===================================================================
               """, delay=0.02)
     sleep(1)
@@ -533,23 +535,43 @@ def custom_quit():
     while True:
         printslow('Would you like to save your data?\n')
         save=input('Y/N: ')
-        
-        if 'y' in save.lower(): 
-            load_stats()
-            load_tables()
-            save_stats()
-            save_tables()
-            progbar('Saving player data...\n',40)
-            sleep(2)
-            printslow('See you next time!')
-            sleep(2)
-            os.system('clear')
-            quit()
+        if 'y' and 'n' in save.lower():
+            printslow('Please enter either Y or N.')
+        elif 'y' in save.lower(): 
+            try:
+                load_stats()
+                load_tables()
+                save_stats()
+                save_tables()
+                progbar('Saving player data...\n',40)
+                sleep(2)
+                printslow('See you next time!')
+                sleep(2)
+                os.system('clear')
+                quit()
+            except IndexError:
+                printslow('Save data is corrupt or missing. Unable to save player data.\n')
+                while True:
+                    err_ex=input("""What would you like to do:
+1. Return to Main Menu
+2. Exit without saving
+Enter your choice: """)
+                    if err_ex == '1' or 'main' in err_ex.lower(): 
+                        printslow('Returning to Main Menu.') 
+                        sleep(2) 
+                        return main_menu()
+                    elif err_ex == '2' or 'exit' in err_ex.lower(): 
+                        printslow('\nThanks for playing, please start a new game next time you play!') 
+                        sleep(2) 
+                        quit()
+                    else: 
+                        printslow('Invalid input, please try again.\n')
         elif 'n' in save.lower():
             printslow('Are you sure? ')
             check=input('Y/N: ')
             if 'y' in check.lower(): return printslow('See you next time!\n'), os.system('clear'), quit()
             if 'n' in check.lower(): continue
+        else: printslow('Please enter either Y or N')
 
 def meme(text,delay=0.05):
     for char in text:
@@ -565,8 +587,16 @@ def meme(text,delay=0.05):
 
 def meme_error():
     a.aprint('confused3')
+    sleep(0.5)
     a.aprint('table flip')
+    sleep(0.5)
     a.aprint('cry')
+    sleep(0.5)
     print(co.Fore.RED + co.Style.BRIGHT + 'ERROR! ERROR! ' + co.Style.RESET_ALL)
+    sleep(0.5)
     meme('ALL YOUR BASE ARE BELONG TO US!')
     printslow('Ahem... Sorry about that. Anyway, turns out your save data is corrupted or missing, would you kindly start a new game?')
+    sleep(1)
+    for i in range(3):
+        printslow('\nWould you kindly...',delay=0.06)
+        sleep(0.5)

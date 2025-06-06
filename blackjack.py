@@ -2,8 +2,8 @@ from functions import *
 
 
 def mainloop():
-    try:
-        while True:
+    while True:
+        try:
             main_menu()
             sleep(1)
             os.system('clear')
@@ -50,20 +50,18 @@ def mainloop():
                     sleep(2)
                     os.system('clear')
                     continue
-    except IndexError:
-        meme_error()
-        sleep(1)
-        return main_menu()
-    except FileNotFoundError:
-        printslow('Error: File not Found. No player data exists. Please create a new player!')
-        sleep(1)
-        return main_menu()
-    except KeyboardInterrupt:
-        os.system('clear')
-        print('Exit without saving?')
-        ex=input('Y/N: ')
-        if 'y' in ex.lower(): printslow('Exiting Blackjack. Thanks for playing!'), sleep(1), os.system('clear'), quit()
-        if 'n' in ex.lower(): printslow('Returning to Main Menu'), sleep(2), main_menu()
+        except IndexError:
+            meme_error()
+            sleep(1)
+        except FileNotFoundError:
+            printslow('Error: File not Found. No player data exists. Please create a new player!')
+            sleep(1)
+        except KeyboardInterrupt:
+            os.system('clear')
+            print('Exit without saving?')
+            ex=input('Y/N: ')
+            if 'y' in ex.lower(): printslow('Exiting Blackjack. Thanks for playing!'), sleep(1), os.system('clear'), quit()
+            if 'n' in ex.lower(): printslow('Returning to Main Menu'), sleep(2), main_menu()
 
 mainloop()
 
