@@ -14,7 +14,7 @@ table_stats = []
 player_bet_list = []
 
 # variables for outside data files
-n_t_stats_json ='newtables.json'
+n_t_stats_json ='newtables_DONOTDELETE.json'
 t_stats_json = 'tablestats.json'
 p_stats_json = 'playerstats.json'
 dealer = 'dealerasciicards.csv'
