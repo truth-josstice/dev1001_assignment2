@@ -1,7 +1,11 @@
 art==6.5
 colorama==0.4.6
+iniconfig==2.1.0
 markdown-it-py==3.0.0
 mdurl==0.1.2
+packaging==25.0
 playingcards.py==1.1.1
+pluggy==1.6.0
 Pygments==2.19.1
+pytest==8.4.1
 rich==14.0.0
