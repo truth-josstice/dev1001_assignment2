@@ -166,9 +166,9 @@ class Table():
                 f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
             )
             self.player_bet()
-
-    def double_down(self) -> None:
-        if player_stats[0]["chips"] > (player_bet_list[0] * 2):
+    
+    def double_down(self):
+        if player_stats[0]['chips'] > (player_bet_list[0]*2):
             while True:
                 dd = input("Would you like to double your bet? (Y or N): ")
                 if dd.lower() == "y":
@@ -181,7 +181,7 @@ class Table():
             print("You don't have enough chips to double down.")
             return
 
-    def player_move(self) -> None:
+    def player_move(self):
         while True:
             move = input("Would you like to hit or stand?: ")
             match move:
@@ -202,23 +202,18 @@ class Table():
                 case _:
                     print("Please choose a valid move (either hit or stand.)")
                     return
-
-    def dealer_ai(self) -> None:
-        self.display_hand("dealer")
-        score = self.scores("dealer")
-        if len(self.dealer) == 2 and score == 21:
-            self.display_hand("dealer")
-            print(
-                co.Fore.GREEN
-                + co.Style.BRIGHT
-                + "Dealer has Blackjack!\n"
-                + co.Style.RESET_ALL
-            )
+            
+    def dealer_ai(self):
+        self.display_hand('dealer')
+        score = self.scores('dealer')
+        if len(self.dealer) ==2 and score == 21:
+            self.display_hand('dealer')
+            print(co.Fore.GREEN + co.Style.BRIGHT + 'Dealer has Blackjack!\n' + co.Style.RESET_ALL)
             return
         else:
             self.ai_threshold()
-
-    def ai_threshold(self) -> None:
+        
+    def ai_threshold(self):
         while len(self.dealer) < 5:
             score = self.scores("dealer")
             if score <= 21:
@@ -244,13 +239,11 @@ class Table():
             else:
                 return
 
-    def results(self, bet: int) -> str:
-        p_score = self.scores("player")
-        d_score = self.scores("dealer")
-        if len(self.player) == 2 and p_score == 21:
-            self.player1.update_stats(
-                chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1
-            )
+    def results(self, bet):
+        p_score = self.scores('player')
+        d_score = self.scores('dealer')
+        if len(self.player) ==2 and p_score == 21:
+            self.player1.update_stats(chips=int(bet*1.5),chip_won=int(bet*1.5),wins=1)
             self.update_stats(bank=-bet)
             return f"Blackjack earns extra chips! You won ${int(bet*1.5)}!\n"
         elif (d_score > 21) or ((p_score > d_score) and p_score <= 21):

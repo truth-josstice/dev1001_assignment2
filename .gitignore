@@ -1,6 +1,8 @@
 # Ignore .venv folder
 .venv/bin
 .venv/include
+.venv/lib64
+.venv/pyenv.cfg
 .venv/lib/python3.12/site-packages/*
 
 # Keep customised packages
