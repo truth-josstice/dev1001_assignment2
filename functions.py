@@ -41,7 +41,7 @@ class Table():
         table_stats.append({'name': self.name, 'bank': self.bank, 'max_bet': self.max, 'min_bet': self.min, 'r17': self.r17})
 
     def new_deal(self):
-        """Deals the initial hands to player and dealer, updates playerstats, calls 'first_hand' function to display dealer cards, calls 'display_hand' function to display player cards."""
+        """Deals the initial hands to player and dealer by calling draw_n function of Deck class from playingcards package, updates playerstats, calls 'first_hand' function to display dealer cards, calls 'display_hand' function to display player cards."""
         self.player = self.deck.draw_n(2)
         self.player1.update_stats(hands=1)
         self.dealer = self.deck.draw_n(2)
@@ -150,6 +150,7 @@ class Table():
             self.player_bet()
     
     def double_down(self):
+        """Prompts the player to double their initial bet, validates whether the player has enough chips to double, returns an appended list value for player bet."""
         if player_stats[0]['chips'] > (player_bet_list[0]*2):
             while True:
                     dd = input('Would you like to double your bet? (Y or N): ')
@@ -162,6 +163,7 @@ class Table():
             return
 
     def player_move(self):
+        """Prompts the player to input their move based on their dealt hand, checks for hand length to ensure no more than five cards are dealt. """
         while True:
             move = input('Would you like to hit or stand?: ')
             match move:
@@ -184,6 +186,7 @@ class Table():
                     return
             
     def dealer_ai(self):
+        """Displays the dealers full hand and score, checks for blackjack, otherwise calls ai_threshold function to decide if dealer hits or stands according to score and table rules."""
         self.display_hand('dealer')
         score = self.scores('dealer')
         if len(self.dealer) ==2 and score == 21:
@@ -194,6 +197,7 @@ class Table():
             self.ai_threshold()
         
     def ai_threshold(self):
+        """Calls the scoring function to ascertain the total value of dealer hand. Applies if statments based on score, calls draw_n function from Deck class to add cards to hand. Returns ascii display of cards, or printed message of dealer's choice."""
         while len(self.dealer) < 5:
             score = self.scores('dealer')
             if score<=21:
@@ -220,6 +224,7 @@ class Table():
                 return
 
     def results(self, bet):
+        """Evaluates player score and dealer score, and returns results string. Updates playerstats json file dependent on blackjack, winning or losing score."""
         p_score = self.scores('player')
         d_score = self.scores('dealer')
         if len(self.player) ==2 and p_score == 21:
