@@ -13,7 +13,9 @@ def mainloop() -> None:
                 # Calls the choose_table constructor function based on main menu input, imports table parameters from json file, outputs selected table rules calling t_rules function
                 activetable = choose_table()
                 progbar("Loading your table...", 40)
+                progbar("Loading your table...", 40)
                 sleep(2)
+                os.system("clear")
                 os.system("clear")
                 activetable.t_rules()
 
@@ -40,7 +42,11 @@ def mainloop() -> None:
                                     printslow(
                                         "This table is out of chips. Please choose another table."
                                     )
+                                    printslow(
+                                        "This table is out of chips. Please choose another table."
+                                    )
                                     sleep(2)
+                                    os.system("clear")
                                     os.system("clear")
                                     continue
                             if "n" in playagain.lower():
@@ -53,6 +59,7 @@ def mainloop() -> None:
                             )
                             player_bet_list.clear()
                             printslow("Returning to Main Menu")
+                            printslow("Returning to Main Menu")
                             sleep(2)
                             break
                 
@@ -61,7 +68,11 @@ def mainloop() -> None:
                     printslow(
                         "This table is out of chips. Please choose another table."
                     )
+                    printslow(
+                        "This table is out of chips. Please choose another table."
+                    )
                     sleep(2)
+                    os.system("clear")
                     os.system("clear")
                     continue
         
@@ -71,6 +82,9 @@ def mainloop() -> None:
             sleep(1)
         # Checks for all relevent files needed in the base folder, if the file does not exist, requests the creation of a new player to create playerstats.json            
         except FileNotFoundError:
+            printslow(
+                "Error: File not Found. No player data exists. Please create a new player!"
+            )
             printslow(
                 "Error: File not Found. No player data exists. Please create a new player!"
             )
