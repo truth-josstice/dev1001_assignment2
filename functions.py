@@ -22,6 +22,7 @@ player = 'playerasciicards.csv'
 
 #trying to set up tables with a subclass for the nolimit table which is slightly different than the rest
 class Table():
+    """Creates a class for Tables, including all paramters which are necessary for each """
     def __init__(self, name, bank, max_bet, min_bet, r17):
         """Sets up the table with deck to deal from, and other params for each."""
         self.deck = Deck()

@@ -2,6 +2,7 @@ from functions import *
 
 
 def mainloop():
+    """Loops through the regular gameplay, and calls required functions where needed. Checks all required parameters are valid"""
     while True:
         try:
             main_menu()

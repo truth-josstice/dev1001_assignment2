@@ -1,7 +1,7 @@
 [
     {
         "name": "Low Roller's Table",
-        "bank": 200,
+        "bank": 180,
         "max_bet": 20,
         "min_bet": 5,
         "r17": "hit"
