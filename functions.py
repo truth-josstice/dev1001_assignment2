@@ -8,38 +8,24 @@ import colorama as co
 from rich import progress as p
 from playingcards import Deck, Card
 
-# sets up initial stats
+# Sets up empty list to house stats for player and table classes
 player_stats = []
 table_stats = []
 player_bet_list = []
 
-# variables for outside data files
-n_t_stats_json = "newtables_DONOTDELETE.json"
-t_stats_json = "tablestats.json"
-p_stats_json = "playerstats.json"
-dealer = "dealerasciicards.csv"
-player = "playerasciicards.csv"
+# Declared variables for outside data files
+n_t_stats_json ='newtables_DONOTDELETE.json'
+t_stats_json = 'tablestats.json'
+p_stats_json = 'playerstats.json'
+dealer = 'dealerasciicards.csv'
+player = 'playerasciicards.csv'
 
-
-# trying to set up tables with a subclass for the nolimit table which is slightly different than the rest
-class Table:
-    """Creates a class for Tables, including all parameters which are necessary for each"""
-
-    # Class-level type annotations. Details what attributes the class has, and type of attribute.
-    name: str  # Name of each table (e.g. High Stakes), used for display/tracking tables
-    bank: int  # How many chips the dealer has
-    max: int  # Maximum bet allowed, used to validate players bets
-    min: int  # Minimum bet allowed, used to validate players bets
-    r17: str  # Rule to decide dealer behavior upon drawing 17 (e.g Hit or Stand)
-    deck: Deck  # Card Deck object created from playingcards Deck class
-    player1: "Player"  # Player object created from Player class used for defining player data
-    player: list[Card]  # Players current hand as a list of Card objects
-    dealer: list[Card]  # Dealers current hand as a list of Card objects
-
-    def __init__(
-        self, name: str, bank: int, max_bet: int, min_bet: int, r17: int
-    ) -> None:
-        """Sets up the table with deck to deal from, and other params for each."""
+# Create a table class and all related functions
+class Table():
+    
+    def __init__(self, name, bank, max_bet, min_bet, r17):
+        """Sets up the table using Deck class imported from playingcards package to deal from, and other params for each loaded from newtables json file. 
+        Sets up instance of player by calling choose_player function."""
         self.deck = Deck()
         self.deck.shuffle()
         self.name = name
@@ -49,8 +35,8 @@ class Table:
         self.r17 = r17
         self.player1 = choose_player()
 
-    def new_table(self) -> None:
-        "saves new table data to the save file"
+    def new_table(self):
+        """Saves new table data to the playerstats.json file."""
         table_stats.clear()
         table_stats.append(
             {
@@ -62,17 +48,17 @@ class Table:
             }
         )
 
-    def new_deal(self) -> None:
-        """for ever new hand this will occur"""
+    def new_deal(self):
+        """Deals the initial hands to player and dealer, updates playerstats, calls 'first_hand' function to display dealer cards, calls 'display_hand' function to display player cards."""
         self.player = self.deck.draw_n(2)
         self.player1.update_stats(hands=1)
         self.dealer = self.deck.draw_n(2)
         self.first_hand()
-        self.display_hand("player")
-
-    def t_rules(self) -> None:
-        print(
-            f"""
+        self.display_hand('player')
+        
+    def t_rules(self):
+        """Prints the rules of the table using instance parameters."""
+        print(f"""
 =====  {self.name} Table Rules  =====
         Hands cannot be split.
         Deck size: {len(self.deck)}.
@@ -81,21 +67,21 @@ class Table:
         Minimum bet: ${self.min}.
         This dealer will {self.r17} on 17.
 ======================================
-        """
-        )
-
-    def first_hand(self) -> None:
-        name = "Dealer"
-        filename = "dealerasciicards.csv"
+        """)
+    
+    def first_hand(self):
+        """Only used for the initial display of the dealers hand do only display the rank and suit of the first card, calls 'asciicards' method from playingcards package used to represent cards in ascii art. Prints the rank and suit of dealers first card as string."""
+        name = 'Dealer'
+        filename = 'dealerasciicards.csv'
         cards = [x for x in self.dealer]
         ascii = [cards[0].img, cards[0].img1]
         print("=" * 20 + f"{name} Cards" + "=" * 20)
         asciicards(filename, *ascii)
         print(f"{name} shows: '{cards[0]}'" + "\n" + "=" * 52 + "\n")
 
-    def display_hand(self, hand: str) -> None:
-        """ASCII display function for player's hand in each game"""
-        if hand == "player":
+    def display_hand(self, hand):
+        """ASCII display function for every deal bar the first turn of dealer. Refers to .csv files used to correctly format ascii art display of cards. Calls 'asciicards' function from playingcards package to represent cards in ascii art. Checks if player has bust or has blackjack, prints total value of cards dealt."""
+        if hand == 'player':
             cards = self.player
             filename = "playerasciicards.csv"
             name = "Player"
@@ -110,13 +96,12 @@ class Table:
         asciicards(filename, *ascii)
         print(f"{name} score: {score}" + "\n")
         self.eval_hand(name, score, cards)
-        print("=" * 52)
-
-    def eval_hand(self, name: str, score: int, cards: list[Card]) -> None:
-        if score > 21:
-            print(
-                co.Fore.RED + co.Style.BRIGHT + f"{name} Bust!\n" + co.Style.RESET_ALL
-            )
+        print('=' * 52)
+        
+    def eval_hand(self, name, score, cards):
+        """Evaluates cards passed through cards argument, prints whether hand has blackjack or has bust."""    
+        if score >21:
+            print(co.Fore.RED + co.Style.BRIGHT + f'{name} Bust!\n' + co.Style.RESET_ALL)
             return
         if len(cards) == 2 and score == 21:
             print(
@@ -126,15 +111,17 @@ class Table:
                 + co.Style.RESET_ALL
             )
             return
-
-    def scores(self, hand: str) -> int:
-        """Calculates scores with conversion functionality for aces"""
-        if hand == "player":
+          
+    def scores(self, hand):
+        """Calculates scores of hand passed through hand argument with conversion functionality for scoring aces as wild (either 11 or 1)."""
+        if hand == 'player':
             cards = [x for x in self.player]
         if hand == "dealer":
             cards = [x for x in self.dealer]
 
         score = []
+
+        # Check all cards in hand and score based on value of int cards, customised value of face + ace cards
         for card in cards:
             if card.rank == "Ace":
                 score.append(11)
@@ -143,27 +130,37 @@ class Table:
             if type(card.rank) is int:
                 score.append(card.rank)
         total = sum(score)
-        if total > 21 and len(cards) == 2:
+
+        # Checks for the possibility of two Aces dealt, adjusts one ace to be wild by removing 10 from total, returns total value of cards
+        if total >21 and len(cards) == 2:
             total -= 10
             return total
-        elif total > 21 and len(cards) > 2 and score.count(11) > 0:
-            total -= 10 * (score.count(11))
+        # Checks for total larger than 21, checks for any aces held in hand, changes value of aces in hand to wild by removing ten for each held ace, returns total value of cards
+        elif total > 21 and len(cards) >2 and score.count(11) > 0: 
+            total -= (10*(score.count(11)))
             return total
         else:
             return total
-
-    def player_bet(self) -> None:
+        
+    def player_bet(self):
+        """User input prompt for entering a bet amount. Follows table rules for maximum and minimum bet limits, appends playerstats with any relevant stats. Appends bet amount to player_bet_list."""
         bet = input("How much would you like to bet?: ")
+        
+        # Checks if player has enough chips to cover bet
         if self.player1.chips >= int(bet):
             try:
+                # IF bet is between min-max table limits, appends to list of bet amounts
                 if int(bet) >= self.min and int(bet) <= self.max:
                     return player_bet_list.append(int(bet))
-                elif int(bet) < self.min or int(bet) > self.max:
-                    print(f"Please enter a bet between ${self.min} and ${self.max}")
+                # IF bet is outside of table limits, prints limits of table and re-prompts player
+                elif int(bet)<self.min or int(bet) >self.max:
+                    print(f'Please enter a bet between ${self.min} and ${self.max}')
                     self.player_bet()
+            # Checks bet amount is interpretable as an int amount
             except ValueError:
                 print(f"Please enter a valid bet!")
                 self.player_bet()
+        # IF player does not have enough chips to cover bet, prints total remaining chips and re-prompts player
         else:
             print(
                 f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
