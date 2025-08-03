@@ -1,9 +1,9 @@
 {
     "name": "Joss",
-    "chips": 60,
-    "hands": 3,
-    "wins": 1,
-    "losses": 2,
-    "chip_won": 20,
-    "chip_lost": 60
+    "chips": 100,
+    "hands": 0,
+    "wins": 0,
+    "losses": 0,
+    "chip_won": 0,
+    "chip_lost": 0
 }

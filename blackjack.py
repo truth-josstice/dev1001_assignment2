@@ -77,20 +77,19 @@ def mainloop() -> None:
             sleep(1)
         # Checks for user input KeyboardInterrupt error and instead of exiting, prints input for user to save or exit without saving
         except KeyboardInterrupt:
-            os.system("clear")
-            print("Exit without saving?")
-            ex = input("Y/N: ")
-            if "y" in ex.lower():
-                printslow("\nExiting Blackjack. Thanks for playing!"), sleep(
-                    1
-                ), os.system("clear"), quit()
-            if "n" in ex.lower():
-                printslow("\nReturning to Main Menu"), sleep(2), main_menu()
-        except:
-            printslow(
-                "That's a little embarassing! An unexpected error has occured. Returning to main menu."
-            )
+            os.system('clear')
+            print('Exit without saving?')
+            ex=input('Y/N: ')
+            if 'y' in ex.lower(): printslow('\nExiting Blackjack. Thanks for playing!'), sleep(1), os.system('clear'), sys.exit()
+            if 'n' in ex.lower(): printslow('\nReturning to Main Menu'), sleep(2), main_menu()
+        # Allows for clean system exit:
+        except SystemExit:
+            quit()
+        # Catch all general error, should not occur but when it does will return the user to the main menu
+        except: 
+            printslow("That's a little embarassing! An unexpected error has occured. Returning to main menu.")
             sleep(1)
+            
 
 
 mainloop()
