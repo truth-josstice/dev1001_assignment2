@@ -26,7 +26,7 @@ Specific features and functions:
     ```bash
     cd path/to/directory
     ```
-3. Creating a virtual environment is generally best practice when installing packages. This helps to ensure you do not overwrite any globally installed packages. The repo folder should already have a virtual environment in its **".venv"** folder, if not please enter the below in the project folder on Terminal:
+3. Creating a virtual environment is generally best practice when installing packages. This helps to ensure you do not overwrite any globally installed packages. To create a new virtual environment enter the below in the project folder on Terminal:
     ```bash
     python3 -m venv .venv
     ```
