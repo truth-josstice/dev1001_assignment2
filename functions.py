@@ -67,15 +67,6 @@ class Table():
                 "r17": self.r17,
             }
         )
-        table_stats.append(
-            {
-                "name": self.name,
-                "bank": self.bank,
-                "max_bet": self.max,
-                "min_bet": self.min,
-                "r17": self.r17,
-            }
-        )
 
     def new_deal(self) -> None:
         """Deals the initial hands to player and dealer by calling draw_n function of Deck class from playingcards package, updates playerstats, calls 'first_hand' function to display dealer cards, calls 'display_hand' function to display player cards."""
@@ -109,7 +100,6 @@ class Table():
         print("=" * 20 + f"{name} Cards" + "=" * 20)
         asciicards(filename, *ascii)
         print(f"{name} shows: '{cards[0]}'" + "\n" + "=" * 52 + "\n")
-        print(f"{name} shows: '{cards[0]}'" + "\n" + "=" * 52 + "\n")
 
     def display_hand(self, hand: str) -> None:
         """ASCII display function for every deal bar the first turn of dealer. Refers to .csv files used to correctly format ascii art display of cards. Calls 'asciicards' function from playingcards package to represent cards in ascii art. Checks if player has bust or has blackjack, prints total value of cards dealt."""
@@ -118,21 +108,14 @@ class Table():
             filename = "playerasciicards.csv"
             name = "Player"
         if hand == "dealer":
-            filename = "playerasciicards.csv"
-            name = "Player"
-        if hand == "dealer":
             cards = self.dealer
-            filename = "dealerasciicards.csv"
-            name = "Dealer"
             filename = "dealerasciicards.csv"
             name = "Dealer"
         individual_cards = [x for x in cards]
         score = self.scores(name.lower())
         ascii = [x.img for x in individual_cards]
-        ascii = [x.img for x in individual_cards]
         print("=" * 20 + f"{name} Cards" + "=" * 20)
         asciicards(filename, *ascii)
-        print(f"{name} score: {score}" + "\n")
         print(f"{name} score: {score}" + "\n")
         self.eval_hand(name, score, cards)
         print('=' * 52)
@@ -149,12 +132,6 @@ class Table():
                 + f"{name} has Blackjack!"
                 + co.Style.RESET_ALL
             )
-            print(
-                co.Fore.GREEN
-                + co.Style.BRIGHT
-                + f"{name} has Blackjack!"
-                + co.Style.RESET_ALL
-            )
             return
 
     def scores(self, hand: str) -> int:
@@ -162,19 +139,12 @@ class Table():
         if hand == "player":
             cards = [x for x in self.player]
         if hand == "dealer":
-        if hand == "dealer":
             cards = [x for x in self.dealer]
 
         score = []
 
         # Check all cards in hand and score based on value of int cards, customised value of face + ace cards
         for card in cards:
-            if card.rank == "Ace":
-                score.append(11)
-            if card.rank == "King" or card.rank == "Queen" or card.rank == "Jack":
-                score.append(10)
-            if type(card.rank) is int:
-                score.append(card.rank)
             if card.rank == "Ace":
                 score.append(11)
             if card.rank == "King" or card.rank == "Queen" or card.rank == "Jack":
@@ -211,13 +181,9 @@ class Table():
             # Checks bet amount is interpretable as an int amount
             except ValueError:
                 print(f"Please enter a valid bet!")
-                print(f"Please enter a valid bet!")
                 self.player_bet()
         # IF player does not have enough chips to cover bet, prints total remaining chips and re-prompts player
         else:
-            print(
-                f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
-            )
             print(
                 f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
             )
@@ -234,13 +200,6 @@ class Table():
                     return
                 else:
                     print(f"Please select either Y or N")
-                dd = input("Would you like to double your bet? (Y or N): ")
-                if dd.lower() == "y":
-                    return player_bet_list.append(player_bet_list[0])
-                if dd.lower() == "n":
-                    return
-                else:
-                    print(f"Please select either Y or N")
         else:
             print("You don't have enough chips to double down.")
             return
@@ -249,32 +208,22 @@ class Table():
         """Prompts the player to input their move based on their dealt hand, checks for hand length to ensure no more than five cards are dealt. """
         while True:
             move = input("Would you like to hit or stand?: ")
-            move = input("Would you like to hit or stand?: ")
             match move:
-                case "hit":
-                    if len(self.player) < 5:
-                        printslow("\n" + "Player hits!" + "\n\n")
                 case "hit":
                     if len(self.player) < 5:
                         printslow("\n" + "Player hits!" + "\n\n")
                         self.player += self.deck.draw_n(1)
                         self.display_hand("player")
                         if self.scores("player") > 21:
-                        self.display_hand("player")
-                        if self.scores("player") > 21:
                             return
                     else:
                         print("You cannot draw more than five cards!")
-                        print("You cannot draw more than five cards!")
                         return
-                case "stand":
-                    print("\n" + "Player stands." + "\n")
                 case "stand":
                     print("\n" + "Player stands." + "\n")
                     self.dealer_ai()
                     break
                 case _:
-                    print("Please choose a valid move (either hit or stand.)")
                     print("Please choose a valid move (either hit or stand.)")
                     return
 
@@ -300,36 +249,22 @@ class Table():
             score = self.scores("dealer")
             if score <= 21:
                 printslow("Dealer is thinking...\n")
-            score = self.scores("dealer")
-            if score <= 21:
-                printslow("Dealer is thinking...\n")
                 sleep(2)
                 if score <= 17 and self.r17 == "hit":
-                if score <= 17 and self.r17 == "hit":
                     self.dealer += self.deck.draw_n(1)
                     printslow("Dealer hits!\n")
                     self.display_hand("dealer")
                 elif score < 17 and self.r17 == "stand":
-                    printslow("Dealer hits!\n")
-                    self.display_hand("dealer")
-                elif score < 17 and self.r17 == "stand":
                     self.dealer += self.deck.draw_n(1)
-                    printslow("Dealer hits!\n")
-                    self.display_hand("dealer")
-                elif score > 17 and score < 21 and self.r17 == "hit":
-                    printslow("Dealer stands!\n")
                     printslow("Dealer hits!\n")
                     self.display_hand("dealer")
                 elif score > 17 and score < 21 and self.r17 == "hit":
                     printslow("Dealer stands!\n")
                     return
-                elif score >= 17 and score < 21 and self.r17 == "stand":
-                    printslow("Dealer stands!\n")
                 elif score >= 17 and score < 21 and self.r17 == "stand":
                     printslow("Dealer stands!\n")
                     return
                 else:
-                    printslow("Dealer stands.\n")
                     printslow("Dealer stands.\n")
                     return
             else:
@@ -342,9 +277,7 @@ class Table():
 
         # Checks for blackjack by checking length of hand and score
         if len(self.player) == 2 and p_score == 21:
-            self.player1.update_stats(
-                chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1
-            )
+            self.player1.update_stats(chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1)
             self.update_stats(bank=-bet)
             return f"Blackjack earns extra chips! You won ${int(bet*1.5)}!\n"
         # Checks for player score beating dealer score
@@ -356,11 +289,7 @@ class Table():
         elif p_score == d_score:
             return f"Hand was a tie, no chips gained or lost!\n"
         # Checks for all losing scenarios, score, dealer blackjack and player bust
-        elif (
-            (p_score < d_score)
-            or (len(self.player) > 2 and d_score == 21)
-            or p_score > 21
-        ):
+        elif ((p_score < d_score) or (len(self.player) > 2 and d_score == 21) or p_score > 21):
             self.player1.update_stats(chips=-int(bet), chip_lost=int(bet), losses=1)
             return f"You lost ${bet}!\n"
 
@@ -370,10 +299,6 @@ class Table():
             for x in table_stats[0]:
                 if self.name in x["name"]:
                     x[key] += value
-                if self.name in x["name"]:
-                    x[key] += value
-
-
 
 class NoLimit(Table):
     """Subclass of Table. Inherits arguments for deck, name, min_bet, r17."""
@@ -393,8 +318,6 @@ class NoLimit(Table):
 ==========================================
         """
         )
-        """
-        )
 
     def player_bet(self) -> None:
         """Customised version of Table function, added custom string for the no limit table, removing the maximum bet limit from funcion."""
@@ -407,17 +330,10 @@ class NoLimit(Table):
                         return player_bet_list.append(int(bet))
                     elif int(bet) < self.min:
                         print(f"Please enter a bet between of at least ${self.min}")
-                    elif int(bet) < self.min:
-                        print(f"Please enter a bet between of at least ${self.min}")
                         self.player_bet()
                 except ValueError:
                     print(f"Please enter a valid bet!")
-                    print(f"Please enter a valid bet!")
                     self.player_bet()
-            else:
-                print(
-                    f"You only have ${player_stats[0]['chips']} remaining in chips. Please choose a lower bet."
-                )
             else:
                 print(
                     f"You only have ${player_stats[0]['chips']} remaining in chips. Please choose a lower bet."
@@ -425,15 +341,8 @@ class NoLimit(Table):
                 self.player_bet()
         # Custom script for the no limit table's minimum bet not being met
         else:
-            printslow(
-                "You don't have enough chips to play at this table yet. Try the other tables first! \n"
-            )
+            printslow("You don't have enough chips to play at this table yet. Try the other tables first! \n")
             printslow("Returning to Main Menu.")
-            printslow(
-                "You don't have enough chips to play at this table yet. Try the other tables first! \n"
-            )
-            printslow("Returning to Main Menu.")
-            sleep(2)
             main_menu()
 
     def results(self, bet: int) -> str:
@@ -441,9 +350,7 @@ class NoLimit(Table):
         p_score = self.scores("player")
         d_score = self.scores("dealer")
         if len(self.player) == 2 and p_score == 21:
-            self.player1.update_stats(
-                chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1
-            )
+            self.player1.update_stats(chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1)
             return f"Blackjack earns extra chips! You won ${int(bet*1.5)}!\n"
         elif d_score > 21:
             self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
@@ -451,27 +358,25 @@ class NoLimit(Table):
         elif d_score < 21 and ((p_score > d_score) and p_score <= 21):
             self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
             return f"Player {p_score} beats dealer {d_score}. You won ${bet}!\n"
-            self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
-            return f"You won &{bet}\n"
-        elif d_score < 21 and ((p_score > d_score) and p_score <= 21):
-            self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
-            return f"Player {p_score} beats dealer {d_score}. You won ${bet}!\n"
         elif p_score == d_score:
             return f"Hand was a tie, no chips gained or lost!\n"
-        elif (
-            (p_score < d_score)
-            or (len(self.player) > 2 and d_score == 21)
-            or p_score > 21
-        ):
+        elif ((p_score < d_score) or (len(self.player) > 2 and d_score == 21) or p_score > 21):
             self.player1.update_stats(chips=-int(bet), chip_lost=int(bet), losses=1)
             return f"You lost ${bet}!\n"
 
-
-
 class Player():
     """Player class which sets up new player with default variables."""
+
+    # Class-level type annotations. Details what attributes the class has, and type of attribute.
+    name: str  # The player’s name, used for display/tracking player
+    chips: int  # Current players chip total
+    hands: int  # Total hands played by player
+    wins: int  # Total hands won by player
+    losses: int  # Total hands lost by player
+    chip_won: int  # Total chips won by player
+    chip_lost: int  # Total chips lost by player
     
-    def __init__(self, name, chips=100, hands=0, wins=0, losses=0, chip_won=0, chip_lost=0):
+    def __init__(self, name: str, chips: int = 100, hands: int = 0, wins: int = 0, losses: int = 0, chip_won: int = 0, chip_lost: int = 0) -> None :
         "Sets up initial player stats, all default values are parsed in here. Returns a player object."
         self.name = name.capitalize()
         self.chips = chips
@@ -505,8 +410,6 @@ class Player():
     def read_stats(self) -> None:
         """String function which displays all player stats."""
         try:
-            print(
-                f"""============= Player Stats =============
             print(
                 f"""============= Player Stats =============
             Player: {self.name.title()}
@@ -560,31 +463,31 @@ def save_stats() -> None:
         j.dump(player_stats[0], f, indent=4)
 
 def new_player():
-        """Prompts user to overwrite saved data, prompts for username input. Returns a Player object."""
-        printslow('Are you sure you would like to start a new game? All previous save data will be deleted.\n',delay=0.03)
-        while True:
-            confirm=input('Confirm new player (Y or N)?: ')
-            # Checks for both a y and n in the input
-            if 'y' and 'n' in confirm.lower():
-                printslow("Please enter one choice only.\n")
-            # For new player, clears local player_stats list and calls new_save function to set default values with passed player name
-            elif 'y' in confirm.lower():
-                name=input('Please enter a name for your player: ')
-                player_stats.clear()
-                player1 = Player(name)
-                player1.new_save()
-                return player1
-            # Returns to the main menu
-            elif 'n' in confirm.lower():
-                printslow('Returning to Main Menu.'), os.system('clear')
-            # Checks for any input other than y or n
-            else:
-                printslow("Please enter a valid choice: Y or N.\n")
+    """Prompts user to overwrite saved data, prompts for username input. Returns a Player object."""
+    printslow('Are you sure you would like to start a new game? All previous save data will be deleted.\n',delay=0.03)
+    while True:
+        confirm=input('Confirm new player (Y or N)?: ')
+        # Checks for both a y and n in the input
+        if 'y' and 'n' in confirm.lower():
+            printslow("Please enter one choice only.\n")
+        # For new player, clears local player_stats list and calls new_save function to set default values with passed player name
+        elif 'y' in confirm.lower():
+            name=input('Please enter a name for your player: ')
+            player_stats.clear()
+            player1 = Player(name)
+            player1.new_save()
+            return player1
+        # Returns to the main menu
+        elif 'n' in confirm.lower():
+            printslow('Returning to Main Menu.'), os.system('clear')
+        # Checks for any input other than y or n
+        else:
+            printslow("Please enter a valid choice: Y or N.\n")
 
 
 def printslow(text, delay=0.05) -> None:
     """Prints passed argument string character by character."""
-  for char in text:
+    for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
         sleep(delay)
@@ -670,6 +573,7 @@ def main_menu():
                 
 def house_rules():
     """Prints the rules of blackjack according to this app. Returns main menu function to return to main menu."""
+    
     printslow("""
 ================ The Casino of Truth and Josstice! ================
                         House Rules
@@ -699,11 +603,7 @@ def house_rules():
               """,
         delay=0.02,
     )
-              """,
-        delay=0.02,
-    )
     sleep(1)
-    input("Press any key to return to Main Menu")
     input("Press any key to return to Main Menu")
     return main_menu()
 
@@ -716,8 +616,6 @@ def choose_table() -> Table | NoLimit:
     nolimit = NoLimit(*[x for x in table_stats[0][3].values()])
     printslow(
         """======== Table Menu ========
-    printslow(
-        """======== Table Menu ========
     1. Low Roller's Table
     2. Mid Roller's Table
     3. High Roller's Table
@@ -726,43 +624,28 @@ def choose_table() -> Table | NoLimit:
 ============================""",
         delay=0.02,
     )
-============================""",
-        delay=0.02,
-    )
+
     while True:
         tablec = input("\nPlease select an option from the list above: ")
         if tablec == "1" or "low" in tablec.lower():
             activetable = low
-        tablec = input("\nPlease select an option from the list above: ")
-        if tablec == "1" or "low" in tablec.lower():
-            activetable = low
             return activetable
-        elif tablec == "2" or "mid" in tablec.lower():
         elif tablec == "2" or "mid" in tablec.lower():
             activetable = mid
             return activetable
         elif tablec == "3" or "high" in tablec.lower():
-        elif tablec == "3" or "high" in tablec.lower():
             activetable = high
             return activetable
-        elif tablec == "4" or "no" in tablec.lower():
         elif tablec == "4" or "no" in tablec.lower():
             activetable = nolimit
             return activetable
         elif tablec == "5" or "exit" in tablec.lower():
             printslow("Returning to Main Menu")
-        elif tablec == "5" or "exit" in tablec.lower():
-            printslow("Returning to Main Menu")
             sleep(2)
-            os.system("clear")
             os.system("clear")
             main_menu()
         else:
             print("Invalid selection, please select a table from the above.")
-
-        else:
-            print("Invalid selection, please select a table from the above.")
-
 
 def choose_player() -> Player:
     """Allows player object to be created within any table specific functions. Returns the player object."""
@@ -804,9 +687,7 @@ def custom_quit() -> None:
                 save_stats()
                 save_tables()
                 progbar("Saving player data...\n", 40)
-                progbar("Saving player data...\n", 40)
                 sleep(2)
-                printslow("See you next time!")
                 printslow("See you next time!")
                 sleep(2)
                 os.system("clear")
@@ -816,21 +697,11 @@ def custom_quit() -> None:
                 printslow(
                     "Save data is corrupt or missing. Unable to save player data.\n"
                 )
-                printslow(
-                    "Save data is corrupt or missing. Unable to save player data.\n"
-                )
                 while True:
-                    err_ex = input(
-                        """What would you like to do:
                     err_ex = input(
                         """What would you like to do:
 1. Return to Main Menu
 2. Exit without saving
-Enter your choice: """
-                    )
-                    if err_ex == "1" or "main" in err_ex.lower():
-                        printslow("Returning to Main Menu.")
-                        sleep(2)
 Enter your choice: """
                     )
                     if err_ex == "1" or "main" in err_ex.lower():
@@ -841,14 +712,9 @@ Enter your choice: """
                         printslow(
                             "\nThanks for playing, please start a new game next time you play!"
                         )
-                    elif err_ex == "2" or "exit" in err_ex.lower():
-                        printslow(
-                            "\nThanks for playing, please start a new game next time you play!"
-                        )
                         sleep(2)
                         os.system("clear")
-                        os.system("clear")
-                        quit()
+                        sys.exit()
                     else:
                         printslow("Invalid input, please try again.\n")
         # Checks for correct input
@@ -874,10 +740,7 @@ def meme(text: str, delay: int = 0.05) -> None:
     sleep(2)
     for char in text:
         sys.stdout.write("\b")
-    for char in text:
-        sys.stdout.write("\b")
         sys.stdout.flush()
-        sleep(delay * 1)
         sleep(delay * 1)
     sleep(1)
 
@@ -887,12 +750,9 @@ def meme_error() -> None:
     a.aprint("confused3")
     sleep(0.5)
     a.aprint("table flip")
-    a.aprint("table flip")
     sleep(0.5)
     a.aprint("cry")
-    a.aprint("cry")
     sleep(0.5)
-    print(co.Fore.RED + co.Style.BRIGHT + "ERROR! ERROR! " + co.Style.RESET_ALL)
     print(co.Fore.RED + co.Style.BRIGHT + "ERROR! ERROR! " + co.Style.RESET_ALL)
     sleep(0.5)
     meme("ALL YOUR BASE ARE BELONG TO US!") # Zero Wing Reference
@@ -903,10 +763,6 @@ def meme_error() -> None:
     for i in range(3):
         printslow("\nWould you kindly...", delay=0.06) # Bioshock reference
         sleep(0.5)
-    printslow(
-        "\nOkay, enough video game references, let's go back to the Main Menu already\n"
-    )
-    a.aprint("happy4")
     printslow(
         "\nOkay, enough video game references, let's go back to the Main Menu already\n"
     )
