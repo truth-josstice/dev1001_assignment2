@@ -25,7 +25,7 @@ class Table():
     
     def __init__(self, name, bank, max_bet, min_bet, r17):
         """Sets up the table using Deck class imported from playingcards package to deal from, and other params for each loaded from newtables json file. 
-        Sets up instance of player by calling choose_player function."""
+        Sets up instance of player by calling choose_player function. Returns a Table object."""
         self.deck = Deck()
         self.deck.shuffle()
         self.name = name
@@ -91,7 +91,7 @@ class Table():
         print('=' * 52)
         
     def eval_hand(self, name, score, cards):
-        """Evaluates cards passed through cards argument, prints whether hand has blackjack or has bust."""    
+        """Evaluates cards passed through cards argument, prints whether hand has blackjack or has bust. Calls methods from colorama to display text in colour."""    
         if score >21:
             print(co.Fore.RED + co.Style.BRIGHT + f'{name} Bust!\n' + co.Style.RESET_ALL)
             return
@@ -186,7 +186,7 @@ class Table():
                     return
             
     def dealer_ai(self):
-        """Displays the dealers full hand and score, checks for blackjack, otherwise calls ai_threshold function to decide if dealer hits or stands according to score and table rules."""
+        """Displays the dealers full hand and score, checks for blackjack, otherwise calls ai_threshold function to decide if dealer hits or stands according to score and table rules. Calls methods from colorama to display text in color."""
         self.display_hand('dealer')
         score = self.scores('dealer')
         if len(self.dealer) ==2 and score == 21:
@@ -227,32 +227,41 @@ class Table():
         """Evaluates player score and dealer score, and returns results string. Updates playerstats json file dependent on blackjack, winning or losing score."""
         p_score = self.scores('player')
         d_score = self.scores('dealer')
+
+        # Checks for blackjack by checking length of hand and score
         if len(self.player) ==2 and p_score == 21:
             self.player1.update_stats(chips=int(bet*1.5),chip_won=int(bet*1.5),wins=1)
             self.update_stats(bank=-bet)
             return f'Blackjack earns extra chips! You won ${int(bet*1.5)}!\n'
+        # Checks for player score beating dealer score
         elif (d_score >21) or ((p_score > d_score) and p_score <=21):
             self.player1.update_stats(chips=int(bet),chip_won=int(bet),wins=1)
             self.update_stats(bank=-bet)
             return f'Player {p_score} beats dealer {d_score}. You won ${bet}!\n'
+        # Checks for exact matching score
         elif p_score == d_score:
             return f'Hand was a tie, no chips gained or lost!\n'
+        # Checks for all losing scenarios, score, dealer blackjack and player bust
         elif (p_score < d_score) or (len(self.player) >2 and d_score == 21) or p_score>21:
             self.player1.update_stats(chips=-int(bet),chip_lost=int(bet),losses=1)
             return f'You lost ${bet}!\n'
     
     def update_stats(self, **kwargs):
+        """General function updates local table_stats list based on passed keyword arguments."""
         for key, value in kwargs.items():
             for x in table_stats[0]:
                 if self.name in x['name']:
                     x[key] += value         
 
 class NoLimit(Table):
+    """Subclass of Table. Inherits arguments for deck, name, min_bet, r17."""
+    
     def __init__(self, *args):
-        """sets up specific nolimit params"""
+        """Allows for the removal of max_bet, bank."""
         super().__init__(*args)
 
     def t_rules(self):
+        """Customised table rules display as multiple limits no longer exist."""
         print(f"""=====  {self.name} Rules  =====
         Hands cannot be split.
         Deck size: {len(self.deck)}.
@@ -262,6 +271,8 @@ class NoLimit(Table):
         """)
 
     def player_bet(self):
+        """Customised version of Table function, added custom string for the no limit table, removing the maximum bet limit from funcion."""
+        
         if self.player1.chips >= self.min:
             bet = input("How much would you like to bet?: ")
             if self.player1.chips >= int(bet):
@@ -277,6 +288,7 @@ class NoLimit(Table):
             else: 
                 print(f'You only have ${player_stats[0]['chips']} remaining in chips. Please choose a lower bet.')
                 self.player_bet()
+        # Custom script for the no limit table's minimum bet not being met
         else:
             printslow("You don't have enough chips to play at this table yet. Try the other tables first! \n")
             printslow('Returning to Main Menu.')
@@ -284,6 +296,7 @@ class NoLimit(Table):
             main_menu()
 
     def results(self, bet):
+        """"Customised from Table.results function. No longer removes any chips from table bank. Returns string dependent on result."""
         p_score = self.scores('player')
         d_score = self.scores('dealer')
         if len(self.player) ==2 and p_score == 21:
@@ -301,10 +314,12 @@ class NoLimit(Table):
             self.player1.update_stats(chips=-int(bet),chip_lost=int(bet),losses=1)
             return f'You lost ${bet}!\n'
 
-# player class to hold player data
+
 class Player():
+    """Player class which sets up new player with default variables."""
+    
     def __init__(self, name, chips=100, hands=0, wins=0, losses=0, chip_won=0, chip_lost=0):
-        "sets up initial player stats, all default values are parsed in here"
+        "Sets up initial player stats, all default values are parsed in here. Returns a player object."
         self.name = name.capitalize()
         self.chips = chips
         self.hands = hands
@@ -314,16 +329,18 @@ class Player():
         self.chip_lost = chip_lost
 
     def new_save(self):
-        "saves new players data to the save file"
+        "Saves new players data to the local player_stats list."
         player_stats.clear()
         player_stats.append({'name': self.name, 'chips': self.chips, 'hands': self.hands, 'wins': self.wins, 'losses': self.losses, 'chip_won': self.chip_won, 'chip_lost': self.chip_lost})
     
     def update_stats(self, **kwargs):
+        """Function updates player stats in the local player_stats list."""
         for key, value in kwargs.items():
             for x in player_stats:
                     x[key] += value
       
     def read_stats(self):
+        """String function which displays all player stats."""
         try:
             print(f"""============= Player Stats =============
             Player: {self.name.title()}
@@ -335,70 +352,72 @@ class Player():
             Total chips lost: ${self.chip_lost}
     ========================================
             """)
+        # Error catching
         except IndexError:
             print("No player data exists, please create or load a player!")
 
-# global functions not tied to any class but may use class data
+
+# Global functions not tied to any class but may use class data
 def new_tables():
-    try:
-        with open(n_t_stats_json, 'r') as f:
-            save = j.load(f)
-            table_stats.clear()
-            table_stats.append(save)
-    except j.decoder.JSONDecodeError:
-        pass
+    """Loads default Table data from json and appends to local list for object creation."""
+    with open(n_t_stats_json, 'r') as f:
+        save = j.load(f)
+        table_stats.clear()
+        table_stats.append(save)
 
 def save_tables():
+    """Dumps local table_stats list to json document and formats for human readability."""
     with open(t_stats_json, 'w') as f:
         j.dump(table_stats[0], f, indent=4)
 
 def load_tables():
-    try:
-        with open(t_stats_json, 'r') as f:
-            save = j.load(f)
-            table_stats.append(save)
-    except j.decoder.JSONDecodeError:
-        pass
+    """Loads saved table data from json and appends to local table_stats list."""
+    with open(t_stats_json, 'r') as f:
+        save = j.load(f)
+        table_stats.append(save)
 
 def load_stats():
-    """without this function, saves will not be carried over between multiple playthroughs, this loads all data in at the start of each session"""
-    try:
-        with open(p_stats_json, 'r') as f:
-            save = j.load(f)
-            player_stats.append(save)
-    except j.decoder.JSONDecodeError:
-        pass
+    """Loads saved player data from json and appends to local player_stats list."""
+    with open(p_stats_json, 'r') as f:
+        save = j.load(f)
+        player_stats.append(save)
 
 def save_stats():
-    """saves all stats of all currently saved players"""
+    """Dumps local player_stats list to json and indents for human readability."""
     with open(p_stats_json, 'w') as f:
         j.dump(player_stats[0], f, indent=4)
 
 def new_player():
-        """saves new players data to the save file"""
+        """Prompts user to overwrite saved data, prompts for username input. Returns a Player object."""
         printslow('Are you sure you would like to start a new game? All previous save data will be deleted.\n',delay=0.03)
         while True:
             confirm=input('Confirm new player (Y or N)?: ')
+            # Checks for both a y and n in the input
             if 'y' and 'n' in confirm.lower():
                 printslow("Please enter one choice only.\n")
+            # For new player, clears local player_stats list and calls new_save function to set default values with passed player name
             elif 'y' in confirm.lower():
                 name=input('Please enter a name for your player: ')
                 player_stats.clear()
                 player1 = Player(name)
                 player1.new_save()
                 return player1
+            # Returns to the main menu
             elif 'n' in confirm.lower():
                 printslow('Returning to Main Menu.'), os.system('clear')
+            # Checks for any input other than y or n
             else:
                 printslow("Please enter a valid choice: Y or N.\n")
 
 def printslow(text, delay=0.05):
+  """Prints passed argument string character by character."""
   for char in text:
     sys.stdout.write(char)
     sys.stdout.flush()
     sleep(delay)
 
 def main_menu():
+        """Displays main menu, prompts user for choices and handles all input choices by calling the associated functions. Calls progbar function imported from rich package to show saving/loading progress."""
         os.system('clear')
         printslow("""    ============ Welcome to Blackjack! ============
                 1. New Game
@@ -414,6 +433,7 @@ def main_menu():
             )
         while True:
             choice = input("Please select an option: ")
+            # Checks for both str and int inputs, calls required functions to create a new player, returns main menu function to re-display the main menu
             if choice == '1' or 'new' in choice.lower():
                 os.system('clear')
                 new_player()
@@ -424,6 +444,7 @@ def main_menu():
                 printslow('New player created! Returning to Main Menu')
                 sleep(1)
                 return main_menu()
+            # Checks for both str and int inputs, calls required functions to load player stats
             elif choice == '2' or 'continue' in choice.lower():
                 os.system('clear')
                 load_stats()
@@ -440,10 +461,12 @@ def main_menu():
                         input('Press any key to return to Main Menu.')
                         return main_menu()
                     else: print('Invalid selection, please try again.')
+            # Checks for both str and int inputs, calls house rules function, returns to main menu
             elif choice == '3' or 'rules' in choice.lower():
                 os.system('clear')
                 house_rules()
                 return main_menu()
+            # Checks for both str and int inputs, calls required functions to show player functions
             elif choice == '4' or 'see pla' in choice.lower():
                 progbar('Loading player stats...')
                 sleep(2)
@@ -453,6 +476,7 @@ def main_menu():
                 player1.read_stats()
                 input('Press any key to return to Main Menu')
                 return main_menu()
+            # Checks for both str and int inputs, calls required functions to display table data, returns to main menu
             elif choice == '5' or 'see tab' in choice.lower():
                 progbar("Loading chip data...")
                 sleep(0.5)
@@ -464,6 +488,7 @@ def main_menu():
                 sleep(0.3)
                 input('Press any key to return to Main Menu')
                 return main_menu()
+            # Checks for both str and int inputs, calls custom quit menu function
             elif choice == '6' or 'quit' in choice.lower():
                 os.system('clear')
                 return custom_quit()
@@ -471,6 +496,7 @@ def main_menu():
                 printslow('Invalid selection, please try again.\n')
                 
 def house_rules():
+    """Prints the rules of blackjack according to this app. Returns main menu function to return to main menu."""
     printslow("""
 ================ The Casino of Truth and Josstice! ================
                         House Rules
@@ -503,6 +529,7 @@ def house_rules():
     return main_menu()
 
 def choose_table():
+    """Creates a table object based on user input by parsing table_stats local list."""
     low = Table(*[x for x in table_stats[0][0].values()])
     mid = Table(*[x for x in table_stats[0][1].values()])
     high = Table(*[x for x in table_stats[0][2].values()])
@@ -536,17 +563,17 @@ def choose_table():
         else: print('Invalid selection, please select a table from the above.')
 
 def choose_player():
+    """Allows player object to be created within any table specific functions. Returns the player object."""
     player1=Player(*[x for x in player_stats[0].values()])
     return player1
 
 def progbar(desc,rng=30):
+    """Modified progress bar from rich package."""
     for i in p.track(range(rng), description=desc):
         sleep(0.1)  # Simulate work being done
 
 def asciicards(filename, *lists) -> str:
-    """ 
-    Creates a side by side ASCII of two or more cards
-    """
+    """ Creates a side by side ASCII of two or more cards by parsing characters and adding them to a single row in CSV file."""
     with open(filename, 'w', newline='') as f:
         writer = c.writer(f)
         for row in zip(*lists):
@@ -558,10 +585,12 @@ def asciicards(filename, *lists) -> str:
             print("   ".join(row))
 
 def custom_quit():
+    """Calls all required save functions to write data to external json files. Quits program by returning sys.exit function."""
     printslow('Thanks for playing!\n') 
     while True:
         printslow('Would you like to save your data?\n')
         save=input('Y/N: ')
+        # Loads all local stats from local lists and saves to external json files
         if save.lower() == 'y': 
             try:
                 load_stats()
@@ -573,7 +602,8 @@ def custom_quit():
                 printslow('See you next time!')
                 sleep(2)
                 os.system('clear')
-                quit()
+                sys.exit()
+            #If external files are altered while app is running the below will occur
             except IndexError:
                 printslow('Save data is corrupt or missing. Unable to save player data.\n')
                 while True:
@@ -592,15 +622,17 @@ Enter your choice: """)
                         quit()
                     else: 
                         printslow('Invalid input, please try again.\n')
+        # Checks for correct input
         elif save.lower() == 'n':
             printslow('Are you sure? ')
             check=input('Y/N: ')
-            if check.lower() == 'y': return printslow('See you next time!\n'), os.system('clear'), quit()
+            if check.lower() == 'y': return printslow('See you next time!\n'), os.system('clear'), sys.exit()
             elif check.lower() == 'n': continue
             else: printslow('Please enter either Y or N')
         else: printslow('Please enter either Y or N')
 
 def meme(text,delay=0.05):
+    """For text in the meme error, simulates actual keyboard inputs to return cursor to the beginning of the terminal line."""
     for char in text:
         sys.stdout.write(char)
         sys.stdout.flush()
@@ -613,6 +645,7 @@ def meme(text,delay=0.05):
     sleep(1)
 
 def meme_error():
+    """A pretty fun little custom error message using aprint method from the art package to return ascii art, methods from colorama to display text in color. Ultimately returns main_menu function to return to the main menu."""
     a.aprint('confused3')
     sleep(0.5)
     a.aprint('table flip')
@@ -621,11 +654,11 @@ def meme_error():
     sleep(0.5)
     print(co.Fore.RED + co.Style.BRIGHT + 'ERROR! ERROR! ' + co.Style.RESET_ALL)
     sleep(0.5)
-    meme('ALL YOUR BASE ARE BELONG TO US!')
+    meme('ALL YOUR BASE ARE BELONG TO US!') # Zero Wing Reference
     printslow('Ahem... Sorry about that. Anyway, turns out your save data is corrupted or missing, would you kindly start a new game?')
     sleep(1)
     for i in range(3):
-        printslow('\nWould you kindly...',delay=0.06)
+        printslow('\nWould you kindly...',delay=0.06) # Bioshock reference
         sleep(0.5)
     printslow("\nOkay, enough video game references, let's go back to the Main Menu already\n")
     a.aprint('happy4')
