@@ -467,29 +467,12 @@ class NoLimit(Table):
             return f"You lost ${bet}!\n"
 
 
-# player class to hold player data
-class Player:
 
-    # Class-level type annotations. Details what attributes the class has, and type of attribute.
-    name: str  # The player’s name, used for display/tracking player
-    chips: int  # Current players chip total
-    hands: int  # Total hands played by player
-    wins: int  # Total hands won by player
-    losses: int  # Total hands lost by player
-    chip_won: int  # Total chips won by player
-    chip_lost: int  # Total chips lost by player
-
-    def __init__(
-        self,
-        name: str,
-        chips: int = 100,
-        hands: int = 0,
-        wins: int = 0,
-        losses: int = 0,
-        chip_won: int = 0,
-        chip_lost: int = 0,
-    ) -> None:
-        "sets up initial player stats, all default values are parsed in here"
+class Player():
+    """Player class which sets up new player with default variables."""
+    
+    def __init__(self, name, chips=100, hands=0, wins=0, losses=0, chip_won=0, chip_lost=0):
+        "Sets up initial player stats, all default values are parsed in here. Returns a player object."
         self.name = name.capitalize()
         self.chips = chips
         self.hands = hands
