@@ -1,4 +1,5 @@
 # Ignore .venv folder
+__pycache__
 .venv/bin
 .venv/include
 .venv/lib64
