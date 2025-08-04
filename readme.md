@@ -99,3 +99,63 @@ The app provides a simple menu-driven interface that enables users to interact w
 - Enhanced visuals with ASCII card play display
 - Includes in app 'House Rules' and 'Gameplay Rules' on how to play this app's version of 'Blackjack'
 ![House Rules and Gameplay Rules](/images/house-gameplay-rules.png "House Rules and Gameplay Rules")
+
+### Ethical Considerations
+
+As a developer of a simulated gambling application, I recognise the ethical responsibilities involved in minimising harm, promoting fair play and ensuring legal compliance. While this current development project is a non-commercial, educational simulation with no real money involved, future development updates will aim to include integrations towards aligning with responsible design principles to comply with regulations and meet ethical best practices including:
+
+**1. Responsible Design and Prevention of Harm**
+- Minimise Risk of Addiction:
+Avoided features that encourage excessive play or mimic addictive mechanics such as reward loops and rapid replay. The slow print integration minimises the speed at which players are able to be able to replay rapidly however limits of play may be introduced to minimise excessive gameplay.
+- Transparent Communication:
+This document clearly communicates to users that the application is a simulation for educational and entertainment purposes and does not invvolve real money or financial loss or gain. This is to avoid misleading representations that may contribute to risky behaviours.
+
+<!-- Research source: Simulated gambling environments can normalise betting behavior and increase the risk of problem gambling, even when no real money is involved. -->
+
+**2. Legal and Regulatory Compliance**
+- Age Restrictions:
+Future development considerations would be to integrate age verification with age check to comply with local laws.
+
+<!-- Research source: Compliance with Local Laws:
+Ensure the game does not violate online gambling regulations, such as those outlined in the Australian Interactive Gambling Act. Even simulated gambling may fall under regulatory scrutiny if it promotes betting or could be mistaken for real gambling.-->
+
+**3. Data Privacy and Player Protection**
+- Protection of User Data:
+Future development considerations would be to integrate user profile authentication to protect user profile and player data.
+Personal data is not collected or shared and no sensitive information to users are stored or collected.
+App includes data files which are stored locally upon installing application and user profile data can be manually deleted from files by user.
+
+<!-- Research source: Applications should responsibly handle any personal or gameplay data, ensuring privacy and security. Persistent storage of statistics or profiles should not expose sensitive information. -->
+
+**3.Promotion of Fair Play**
+- Algorithmic Fairness:
+Randomisation of card dealing and outcome determination is genuinely random (not rigged to favor the house or induce losses).
+
+<!-- Can probably consider including a documented logic (like flowshare) to show how functions use randomisation/ai to support fairness in gameplay. -->
+
+<!-- Research source: Disclosure of Odds and Rules: Game rules, odds, and payout structures must be accessible and understandable to all users. Hidden mechanics or unclear rules undermine informed user choice. -->
+
+**4. Social and Psychological Impact**
+- Mental Health Awareness:
+While this application is not intended to be widely distributed or open-source, I acknowledge the potential influence of simulated gambling environments on user behaviour and mental wellbeing.
+
+I encourage all users to engage responsibly and be mindful of the psychological impacts associated with gambling related activities (even in a simulated context). If you or someone you know is experiencing gambling related concerns or requires mental health support, please reach out to the following Australian support services:
+
+- Gambling Help Online (24/7 support) – https://www.gamblinghelponline.org.au
+- Lifeline Australia (Crisis Support & Suicide Prevention) – 13 11 14 | https://www.lifeline.org.au
+- Beyond Blue (Mental Health Support Services) – 1300 22 4636 | https://www.beyondblue.org.au
+- Relationships Australia (Gambling Counselling & Family Support) – https://www.relationships.org.au
+
+For additional resources and regulations, please consult local laws and guidelines relevant to gambling activities in your region.
+
+<!-- Research source: Consider including resources or warnings about problem gambling and offer links to support services if the game is widely distributed.
+Avoiding Social Harm: Developers should be aware that simulated gambling can influence attitudes towards real gambling, potentially leading to harmful behaviors over time.-->
+
+
+<!-- IMPORTANT TO NOTE FOR THIS DEVELOPMENT PROJECT:
+"Developers working on gambling simulations bear ethical responsibilities to minimise harm, comply with relevant laws, protect user data, and promote fair, transparent play. Referencing regulatory and academic guidance is essential to ensure that such projects do not inadvertently contribute to gambling-related harms or regulatory breaches."
+
+I've done the research relevant to this ethical concern of simulated gambling using the below resources/references:
+1. [ACMA Interactive Gambling Act Overview](https://www.acma.gov.au/about-interactive-gambling-act)
+2. [Academic Analysis (TandF)](https://www.tandfonline.com/doi/full/10.1080/15256480.2025.2494575?src=exp-la)
+3. [Parliamentary Report - Simulated Gambling](https://www.aph.gov.au/Parliamentary_Business/Committees/House/Social_Policy_and_Legal_Affairs/Onlinegamblingimpacts/Report/Chapter_6_-_Simulated_gambling_and_gambling-like_activities) -->
