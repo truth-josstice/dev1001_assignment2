@@ -17,10 +17,15 @@
 |   timezonefinder    |    6.5.9    |                              [MIT](https://opensource.org/license/MIT)                               |                          Detects timezones with coordinates                          |
 |        rich         |   14.0.0    |                              [MIT](https://opensource.org/license/MIT)                               |                    Provides rich text and formatting in terminal                     |
 
+### Licence Versions
+
+Each library is open-source and Licenced to allow for educational and personal use under their respective Licences. I acknowledge and respect the work of the open-source community in making these tools available. For more details on each Licence, please visit the respective project pages on PyPI or via their official repositories.
+
 ## Security Impacts
 
-| **Package/Library** |                                  **Potential Risks**                                   |                         **Mitigation Used**                          |
-| :-----------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------: |
-|         art         | Console rendering attacks - potential for terminal output to be changed by an attacker |            Renders predefined ASCII only, not user-input.            |
-|   playingcards.py   |                            Executing unsafe or buggy logic                             | Used only for card deck and shuffling, uses only trusted logic paths |
-|       pluggy        |                                    Plugin injection                                    |   Used internally by `pytest`; no custom plugins loaded in runtime   |
+| **Package/Library** |                                    **Potential Risks**                                    |                                       **Mitigation Used**                                        |
+| :-----------------: | :---------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------: |
+|         art         |      Terminal output could potential be broken or flooded from malicious user input       |                Only pre-determined output is displayed through art, no user input                |
+|      colorama       |                   Can break/bug display if malicious user input is used                   |                     As above, only pre-determined output used, no user input                     |
+|   playingcards.py   |     As a smaller library, buggy or hidden code could unexpectedly alter game outcome      | Code behavior was checked and was consistent with expectations of standard 52 card deck behavior |
+|        rich         | Complex code and features are easy to break with user input accidentally or intentionally |          Only used for basic pre-defined output (e.g. loading bars) and not user input           |
