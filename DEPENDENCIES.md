@@ -16,3 +16,11 @@
 |       pytest        |    8.4.1    |                              [MIT](https://opensource.org/license/MIT)                               |                                Used for testing code                                 |
 |   timezonefinder    |    6.5.9    |                              [MIT](https://opensource.org/license/MIT)                               |                          Detects timezones with coordinates                          |
 |        rich         |   14.0.0    |                              [MIT](https://opensource.org/license/MIT)                               |                    Provides rich text and formatting in terminal                     |
+
+## Security Impacts
+
+| **Package/Library** |                                  **Potential Risks**                                   |                         **Mitigation Used**                          |
+| :-----------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------: |
+|         art         | Console rendering attacks - potential for terminal output to be changed by an attacker |            Renders predefined ASCII only, not user-input.            |
+|   playingcards.py   |                            Executing unsafe or buggy logic                             | Used only for card deck and shuffling, uses only trusted logic paths |
+|       pluggy        |                                    Plugin injection                                    |   Used internally by `pytest`; no custom plugins loaded in runtime   |
