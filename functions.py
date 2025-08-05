@@ -59,7 +59,7 @@ class Table:
         self.player1 = choose_player()
 
     def new_table(self) -> None:
-        """Saves new table data to the playerstats.json file."""
+        """Saves new table data to the player_stats list."""
 
         table_stats.clear()
         table_stats.append(
