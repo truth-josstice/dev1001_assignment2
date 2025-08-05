@@ -1,5 +1,6 @@
 # Ignore .venv folder
 __pycache__/
+.vscode/
 .venv/bin
 .venv/include
 .venv/lib64
