@@ -29,9 +29,7 @@ def mainloop() -> None:
             while True:
                 activetable = choose_table()
                 progbar("Loading your table...", 40)
-                progbar("Loading your table...", 40)
                 sleep(2)
-                os.system("clear")
                 os.system("clear")
                 activetable.t_rules()
 
@@ -64,11 +62,7 @@ def mainloop() -> None:
                                     printslow(
                                         "This table is out of chips. Please choose another table."
                                     )
-                                    printslow(
-                                        "This table is out of chips. Please choose another table."
-                                    )
                                     sleep(2)
-                                    os.system("clear")
                                     os.system("clear")
                                     continue
 
@@ -83,7 +77,6 @@ def mainloop() -> None:
                             )
                             player_bet_list.clear()
                             printslow("Returning to Main Menu")
-                            printslow("Returning to Main Menu")
                             sleep(2)
                             break
 
@@ -92,11 +85,7 @@ def mainloop() -> None:
                     printslow(
                         "This table is out of chips. Please choose another table."
                     )
-                    printslow(
-                        "This table is out of chips. Please choose another table."
-                    )
                     sleep(2)
-                    os.system("clear")
                     os.system("clear")
                     continue
 
@@ -108,9 +97,6 @@ def mainloop() -> None:
 
         except FileNotFoundError:  # Checks all relevant files needed in base folder, if
             # file does not exist, requests the creation of a new player to create playerstats.json
-            printslow(
-                "Error: File not Found. No player data exists. Please create a new player!"
-            )
             printslow(
                 "Error: File not Found. No player data exists. Please create a new player!"
             )
