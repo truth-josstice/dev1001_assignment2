@@ -6,7 +6,7 @@ from time import sleep
 import art as a
 import colorama as co
 from rich import progress as p
-from playingcards import Deck, Card
+from custom_lib.playingcards import Deck, Card
 
 # Sets up empty list to house stats for player and table classes
 player_stats = []
@@ -215,8 +215,9 @@ class Table:
         bet = input("How much would you like to bet?: ")
 
         # Checks if player has enough chips to cover bet
-        if self.player1.chips >= int(bet):
-            try:
+        try:
+            if self.player1.chips >= int(bet):
+            
                 # IF bet is between min-max table limits, appends to list of bet amounts
                 if int(bet) >= self.min and int(bet) <= self.max:
                     return player_bet_list.append(int(bet))
@@ -225,17 +226,18 @@ class Table:
                 elif int(bet) < self.min or int(bet) > self.max:
                     print(f"Please enter a bet between ${self.min} and ${self.max}")
                     self.player_bet()
-
-            except ValueError:  # Checks bet amount is interpretable as an int amount
-                print("Please enter a valid bet!")
+            
+            else:  # IF player does not have enough chips to cover bet, prints total remaining
+            # chips and re-prompts player
+                print(
+                f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
+                )
                 self.player_bet()
 
-        else:  # IF player does not have enough chips to cover bet, prints total remaining
-            # chips and re-prompts player
-            print(
-                f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
-            )
+        except ValueError:  # Checks bet amount is interpretable as an int amount
+            print("Please enter a valid bet!")
             self.player_bet()
+
 
     def double_down(self) -> None:
         """

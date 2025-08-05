@@ -1,14 +1,4 @@
 # Ignore .venv folder
 __pycache__/
 .vscode/
-.venv/bin
-.venv/include
-.venv/lib64
-.venv/pyvenv.cfg
-.venv/lib/python3.12/site-packages/*
-
-# Keep customised packages
-!.venv/lib/python3.12/site-packages/playingcards
-!.venv/lib/python3.12/site-packages/playingcards.py-1.1.1.dist-info
-
-
+.venv/
