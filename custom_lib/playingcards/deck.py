@@ -2,10 +2,30 @@ import random
 from . import card
 from . import cardcollection
 
+"""
+playingcards.py (Custom Modified Version)
+-----------------------------------------
+Original Author: Blake Potvin
+Original Repo: https://github.com/blakepotvin/playingcards.py
+License: MIT License (see LICENSE file)
+
+Modifications by: (your name)
+Date of Modification: 
+
+Summary of Modifications:
+Change to Deck class to allow for two standard decks to be used by dealer.
+
+The modifications are provided under the same MIT License as the original library.
+"""
 
 class Deck(cardcollection.CardCollection):
 
     def __init__(self, deck: list = None) -> None:
+        """
+        Customised version of Deck class, allows for max of 104 cards per Deck object.
+        2-Deck variations of Blackjack have more equitable outcomes for player and dealer.
+        Modified in accordance with MIT license.
+        """
         if deck is not None and self.__validate_initial_deck(deck):
             self.cards = deck
         else:
@@ -15,6 +35,10 @@ class Deck(cardcollection.CardCollection):
         super().__init__(cards=self.cards, maximum=104, ordered=True)
 
     def __generate_deck(self) -> list:
+        """
+        Customised version of __generate_deck to create deck of 104 cards.
+        Modified in accordance with MIT license.
+        """
         deck = []
         for suit in range(4):
             deck.extend(card.Card(value=value, suit=suit, deck=self)

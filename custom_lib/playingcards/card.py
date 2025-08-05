@@ -1,5 +1,20 @@
 import random
 
+"""
+playingcards.py (Custom Modified Version)
+-----------------------------------------
+Original Author: Blake Potvin
+Original Repo: https://github.com/blakepotvin/playingcards.py
+License: MIT License (see LICENSE file)
+
+Modifications by: (your name)
+Date of Modification: 
+
+Summary of Modifications:
+Custom rendering of ASCII card faces, designed to obscure rank and suit, for CLI output
+
+The modifications are provided under the same MIT License as the original library.
+"""
 
 class Card:
     def __init__(self, value: int = None, suit: int = None, deck: classmethod = None) -> None:
@@ -39,7 +54,7 @@ class Card:
 
     def __generate_img(self) -> str:
         """
-        Creates an ASCII image of the playing card object.
+        Creates an ASCII image of playing card object.
         """
         suit_emojis = ["♠", "♣", "♥", "♦"]
         suit = suit_emojis[self.suit]
@@ -52,7 +67,9 @@ class Card:
     
     def __generate_img1(self) -> str:
         """
-        Creates an ASCII image of the playing card object.
+        Customised version of __generate_img used to obscure rank and suit of dealer card.
+        First hand of Blackjack for dealer always shows only one card.
+        Modified in accordance with MIT license.
         """
         return ["*- - -*", f'|?    |', f'|  ?  |', f'|   ? |', '*- - -*']
 
