@@ -68,6 +68,7 @@ class Card:
     def __generate_img1(self) -> str:
         """
         Customised version of __generate_img used to obscure rank and suit of dealer card.
+        First hand of Blackjack for dealer always shows only one card.
         Modified in accordance with MIT license.
         """
         return ["*- - -*", f'|?    |', f'|  ?  |', f'|   ? |', '*- - -*']

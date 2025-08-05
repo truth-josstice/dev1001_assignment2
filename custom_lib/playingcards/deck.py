@@ -23,6 +23,7 @@ class Deck(cardcollection.CardCollection):
     def __init__(self, deck: list = None) -> None:
         """
         Customised version of Deck class, allows for max of 104 cards per Deck object.
+        2-Deck variations of Blackjack have more equitable outcomes for player and dealer.
         Modified in accordance with MIT license.
         """
         if deck is not None and self.__validate_initial_deck(deck):
