@@ -123,12 +123,13 @@ class Table:
         playingcards package to represent cards in ascii art. Checks if player has bust or has
         blackjack, prints total value of cards dealt.
         """
-
+        # IF the passed hand parameter is "player", sets all variables needed to show player cards
         if hand == "player":
             cards = self.player
             filename = "playerasciicards.csv"
             name = "Player"
 
+        # IF the passed hand parameter is "dealer", sets all variables needed to show dealer cards1
         if hand == "dealer":
             cards = self.dealer
             filename = "dealerasciicards.csv"
@@ -149,12 +150,14 @@ class Table:
         Calls methods from colorama to display text in colour.
         """
 
+        # IF score is over 21, sends formatted Bust message
         if score > 21:
             print(
                 co.Fore.RED + co.Style.BRIGHT + f"{name} Bust!\n" + co.Style.RESET_ALL
             )
             return
 
+        # Length and Score validation to check for Blackjack, sends formatted message
         if len(cards) == 2 and score == 21:
             print(
                 co.Fore.GREEN
@@ -245,20 +248,23 @@ class Table:
         chips to double, returns an appended list value for player bet.
         """
 
+        # IF player has enough chips to double the bet, prompts user input
         if player_stats[0]["chips"] > (player_bet_list[0] * 2):
             while True:
                 dd = input("Would you like to double your bet? (Y or N): ")
 
+                # IF y is in user input, copies first bet to bet list
                 if dd.lower() == "y":
                     return player_bet_list.append(player_bet_list[0])
 
+                # IF n is in user input, takes no action
                 if dd.lower() == "n":
                     return
 
-                else:
+                else: # IF user has entered an invalid option
                     print("Please select either Y or N")
 
-        else:
+        else: # IF player does not have enough chips to double the bet, does not prompt user input
             print("You don't have enough chips to double down.")
             return
 
@@ -271,24 +277,31 @@ class Table:
         while True:
             move = input("Would you like to hit or stand?: ")
             match move:
+
+                # IF user chooses hit
                 case "hit":
+
+                    # IF player is less than the five card maximum, adds a card to the hand and displays
                     if len(self.player) < 5:
                         printslow("\n" + "Player hits!" + "\n\n")
                         self.player += self.deck.draw_n(1)
                         self.display_hand("player")
 
+                        # IF card drawn results in total over 21, takes no action
                         if self.scores("player") > 21:
                             return
 
-                    else:
+                    else: # IF player has the maximum of five cards currently held
                         print("You cannot draw more than five cards!")
                         return
 
+                # IF user chooses stand, starts dealer turn
                 case "stand":
                     print("\n" + "Player stands." + "\n")
                     self.dealer_ai()
                     break
-
+                
+                # IF user makes a choice other than those available
                 case _:
                     print("Please choose a valid move (either hit or stand.)")
                     return
@@ -303,6 +316,7 @@ class Table:
         self.display_hand("dealer")
         score = self.scores("dealer")
 
+        # Checks length and score of hand for Blackjack
         if len(self.dealer) == 2 and score == 21:
             self.display_hand("dealer")
             print(
@@ -313,7 +327,7 @@ class Table:
             )
             return
 
-        else:
+        else: # IF dealer does not have blackjack, initiates dealer decision making
             self.ai_threshold()
 
     def ai_threshold(self) -> None:
@@ -323,36 +337,42 @@ class Table:
         Returns ascii display of cards, or printed message of dealer's choice.
         """
 
+        # Ensures dealer cannot draw more than five cards
         while len(self.dealer) < 5:
             score = self.scores("dealer")
 
+            # IF score 21 or less simulates dealer decision time
             if score <= 21:
                 printslow("Dealer is thinking...\n")
                 sleep(2)
 
+                # IF table soft 17 rule is hit, dealer will draw card on 17 or below
                 if score <= 17 and self.r17 == "hit":
                     self.dealer += self.deck.draw_n(1)
                     printslow("Dealer hits!\n")
                     self.display_hand("dealer")
 
+                # IF table soft 17 rule is stand, dealer will draw card on 16 or below
                 elif score < 17 and self.r17 == "stand":
                     self.dealer += self.deck.draw_n(1)
                     printslow("Dealer hits!\n")
                     self.display_hand("dealer")
 
+                # IF dealer score is between 18 and 21 dealer will stand
                 elif score > 17 and score < 21 and self.r17 == "hit":
                     printslow("Dealer stands!\n")
                     return
 
+                # IF dealer score is between 17 and 21 dealer will stand
                 elif score >= 17 and score < 21 and self.r17 == "stand":
                     printslow("Dealer stands!\n")
                     return
 
-                else:
+                else: # IF dealer reaches maximum and no score conditions are met dealer stands
                     printslow("Dealer stands.\n")
                     return
 
-            else:
+            else: # Once maximum is reached, returns to gameplay loop
                 return
 
     def results(self, bet: int) -> str:
@@ -427,23 +447,29 @@ class NoLimit(Table):
         the maximum bet limit from function.
         """
 
+        # IF player has more chips than the table minimum
         if self.player1.chips >= self.min:
             bet = input("How much would you like to bet?: ")
 
+            # IF player has enough chips to bet
             if self.player1.chips >= int(bet):
                 try:
+
+                    # IF player bet is above the table minimum, adds to bet list
                     if int(bet) >= self.min:
                         return player_bet_list.append(int(bet))
 
+                    # IF player bet is below minimum, prompts rebet with minimum bet message
                     elif int(bet) < self.min:
                         print(f"Please enter a bet between of at least ${self.min}")
                         self.player_bet()
 
+                # IF player enters any data type other than INT
                 except ValueError:
                     print(f"Please enter a valid bet!")
                     self.player_bet()
 
-            else:
+            else: # IF player does not have enough chips to meet table minimum
                 print(
                     f"You only have ${player_stats[0]['chips']} remaining in chips. Please choose a lower bet."
                 )
@@ -465,23 +491,28 @@ class NoLimit(Table):
         p_score = self.scores("player")
         d_score = self.scores("dealer")
 
+        # Checks for blackjack by checking length of hand and score
         if len(self.player) == 2 and p_score == 21:
             self.player1.update_stats(
                 chips=int(bet * 1.5), chip_won=int(bet * 1.5), wins=1
             )
             return f"Blackjack earns extra chips! You won ${int(bet*1.5)}!\n"
 
+        # Checks for dealer bust
         elif d_score > 21:
             self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
             return f"You won &{bet}\n"
 
+        # Checks for player score beating dealer score
         elif d_score < 21 and ((p_score > d_score) and p_score <= 21):
             self.player1.update_stats(chips=int(bet), chip_won=int(bet), wins=1)
             return f"Player {p_score} beats dealer {d_score}. You won ${bet}!\n"
 
+        # Checks for tie
         elif p_score == d_score:
             return "Hand was a tie, no chips gained or lost!\n"
 
+        # Checks all cases for player loss
         elif (
             (p_score < d_score)
             or (len(self.player) > 2 and d_score == 21)
@@ -745,7 +776,7 @@ def main_menu() -> None:
             os.system("clear")
             return custom_quit()
 
-        else:
+        else: # IF user input is not a valid choice
             printslow("Invalid selection, please try again.\n")
 
 
@@ -797,6 +828,7 @@ def choose_table() -> Table | NoLimit:
     mid = Table(*[x for x in table_stats[0][1].values()])
     high = Table(*[x for x in table_stats[0][2].values()])
     nolimit = NoLimit(*[x for x in table_stats[0][3].values()])
+    
     printslow(
         """======== Table Menu ========
     1. Low Roller's Table
@@ -811,29 +843,34 @@ def choose_table() -> Table | NoLimit:
     while True:
         tablec = input("\nPlease select an option from the list above: ")
 
+        # IF user chooses Low Rollers table
         if tablec == "1" or "low" in tablec.lower():
             activetable = low
             return activetable
 
+        # IF user chooses Mid Rollers table
         elif tablec == "2" or "mid" in tablec.lower():
             activetable = mid
             return activetable
 
+        # IF user chooses High Rollers table
         elif tablec == "3" or "high" in tablec.lower():
             activetable = high
             return activetable
 
+        # IF user chooses No Limit table
         elif tablec == "4" or "no" in tablec.lower():
             activetable = nolimit
             return activetable
 
+        # IF user chooses to Exit
         elif tablec == "5" or "exit" in tablec.lower():
             printslow("Returning to Main Menu")
             sleep(2)
             os.system("clear")
             main_menu()
 
-        else:
+        else: # IF user input is not a valid choice
             print("Invalid selection, please select a table from the above.")
 
 
@@ -883,7 +920,7 @@ def custom_quit() -> None:
         printslow("Would you like to save your data?\n")
         save = input("Y/N: ")
 
-        # Loads all local stats from local lists and saves to external json files
+        # IF user chooses to save loads local lists and saves to external json files
         if save.lower() == "y":
             try:
                 load_stats()
@@ -911,11 +948,13 @@ def custom_quit() -> None:
 Enter your choice: """
                     )
 
+                    # IF user chooses to return to main menu
                     if err_ex == "1" or "main" in err_ex.lower():
                         printslow("Returning to Main Menu.")
                         sleep(2)
                         return main_menu()
 
+                    # IF user chooses to exit without saving
                     elif err_ex == "2" or "exit" in err_ex.lower():
                         printslow(
                             "\nThanks for playing, please start a new game next time you play!"
@@ -924,23 +963,26 @@ Enter your choice: """
                         os.system("clear")
                         sys.exit()
 
-                    else:
+                    else: # IF user input is an invalid choice
                         printslow("Invalid input, please try again.\n")
 
-        elif save.lower() == "n":  # Checks for correct input
+        # IF user chooses not to save sends confirmation message
+        elif save.lower() == "n": 
             printslow("Are you sure? ")
             check = input("Y/N: ")
 
+            # IF user confirms to not save data
             if check.lower() == "y":
                 return printslow("See you next time!\n"), os.system("clear"), sys.exit()
 
+            # IF user wishes to save data, prints initial input prompt
             elif check.lower() == "n":
                 continue
 
-            else:
+            else: # IF user input is not a valid choice
                 printslow("Please enter either Y or N")
 
-        else:
+        else: # IF user input is not a valid choice
             printslow("Please enter either Y or N")
 
 
