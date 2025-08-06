@@ -1,12 +1,17 @@
-import csv as c
-import json as j
-import os
-import sys
-from time import sleep
-import art as a
-import colorama as co
-from rich import progress as p
-from custom_lib.playingcards import Deck, Card
+# Standard Library Imports
+import csv as c # CSV file reading/writing operations
+import json as j # JSON file reading/writing operations
+import os # Operating system interface for clearing display
+import sys # System-specific functions for clean system exit and automatic terminal cursor commands
+from time import sleep # Pause execution for display during application runtime
+
+# Third Party Library Imports
+import art as a # ASCII art text generation
+import colorama as co # Colour and formatting of terminal text display
+from rich import progress as p # Rich progress bars for status tracking (simulated work time)
+
+# Local/Custom Module Imports
+from custom_lib.playingcards import Deck, Card # Customised Card and Deck classes 
 
 # Sets up empty list to house stats for player and table classes
 player_stats = []

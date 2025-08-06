@@ -1,16 +1,16 @@
 # CUSTOM MODULES IMPORT
 
 from functions import (
-    main_menu,
-    choose_table,
-    progbar,
-    sleep,
-    os,
-    printslow,
-    player_stats,
-    player_bet_list,
-    meme_error,
-    sys,
+    main_menu, # Main Menu display and input loop
+    choose_table, # Initiates Table object during gameplay loop
+    progbar, # Simulates task progression
+    sleep, # Pause execution for automatic display
+    os, # Operating system function for clearing display
+    printslow, # Character by character terminal output
+    player_stats, # List containing player stats
+    player_bet_list, # List containing player bets
+    meme_error, # Custom error message for corrupt or missing player data
+    sys, # System-specific function for clean exit
 )
 
 
