@@ -21,7 +21,7 @@
 
 ## Main Menu Options
 
-After launching the game, you will be presented with a menu displaying the following options:
+After launching the game by executing `run_blackjack.py` in the terminal, you will be presented with a menu displaying the following options:
 
 ```bash
     ============ Welcome to Blackjack! ============
@@ -125,29 +125,30 @@ If you want to reset your game stats without deleting the file, you can manually
 To reset your player data, follow these steps:
 
 1. **Open `playerstats.json`:**
+
    - Navigate to your project folder.
    - Locate and open the file named `playerstats.json` using a text editor (eg VS Code).
 
 2. **Replace the Data with Default Values:**
-    - Replace the existing content with the following structure to reset all progress:
+   - Replace the existing content with the following structure to reset all progress:
+
 ```json
 {
-    "name": "YourName",
-    "chips": 100,
-    "hands": 0,
-    "wins": 0,
-    "losses": 0,
-    "chip_won": 0,
-    "chip_lost": 0
+  "name": "YourName",
+  "chips": 100,
+  "hands": 0,
+  "wins": 0,
+  "losses": 0,
+  "chip_won": 0,
+  "chip_lost": 0
 }
 ```
 
 3. **Save the File:**
-    - After updating, save the file.
-    - On the next game launch, the stats will be reset as if you're starting fresh.
+   - After updating, save the file.
+   - On the next game launch, the stats will be reset as if you're starting fresh.
 
-> ⚠️ **Important Notes:**
-> **DO NOT DELETE** the `playerstats.json` file itself - only edit the contents inside.
+> ⚠️ **Important Notes:** > **DO NOT DELETE** the `playerstats.json` file itself - only edit the contents inside.
 > Editing the contents of this file will reset your chips, statistics and progress back to default.
 > Make sure you keep the structure (curly braces {}, commas, and field names) exactly as shown in code snippet above.
 > No sensitive or personal data is stored in the JSON file.

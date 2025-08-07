@@ -43,8 +43,9 @@ Before you begin, please select your operating system to follow the correct setu
    ```
 
 2. **Choose one of the following methods:**
+
    - Download and extract the ZIP folder to your desired directory
-   **OR**
+     **OR**
    - Clone directly from [this github repository](https://github.com/truth-josstice/dev1001_assignment2)
 
    ```bash
@@ -68,7 +69,7 @@ Before you begin, please select your operating system to follow the correct setu
 5. **Run the Application**
 
    ```bash
-   python3 blackjack.py
+   python3 run_blackjack.py
    ```
 
 6. **Deactivate Virtual Environment when Finished**
@@ -92,9 +93,10 @@ Before you begin, please select your operating system to follow the correct setu
    ```
 
 2. **Choose one of the following methods:**
+
    - Download and extract the ZIP folder to your desired directory
-   **OR**
-   Clone directly from [this github repository](https://github.com/truth-josstice/dev1001_assignment2)
+     **OR**
+     Clone directly from [this github repository](https://github.com/truth-josstice/dev1001_assignment2)
 
    ```cmd
    git clone https://github.com/truth-josstice/dev1001_assignment2
@@ -117,7 +119,7 @@ Before you begin, please select your operating system to follow the correct setu
 5. **Run the Application**
 
    ```cmd
-   python blackjack.py
+   python run_blackjack.py
    ```
 
 6. **Deactivate Virtual Environment when Finished**
