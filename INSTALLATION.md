@@ -68,7 +68,7 @@ Before you begin, please select your operating system to follow the correct setu
 5. **Run the Application**
 
    ```bash
-   python3 blackjack.py
+   python3 run_blackjack.py
    ```
 
 6. **Deactivate Virtual Environment when Finished**
