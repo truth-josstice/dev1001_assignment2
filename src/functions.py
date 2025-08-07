@@ -19,11 +19,11 @@ table_stats = []
 player_bet_list = []
 
 # Declared variables for outside data files
-n_t_stats_json = "newtables_DONOTDELETE.json"
-t_stats_json = "tablestats.json"
-p_stats_json = "playerstats.json"
-dealer = "dealerasciicards.csv"
-player = "playerasciicards.csv"
+n_t_stats_json = "src/newtables_DONOTDELETE.json"
+t_stats_json = "src/tablestats.json"
+p_stats_json = "src/playerstats.json"
+dealer = "src/dealerasciicards.csv"
+player = "src/playerasciicards.csv"
 
 
 class Table:
@@ -114,7 +114,7 @@ class Table:
         """
 
         name = "Dealer"
-        filename = "dealerasciicards.csv"
+        filename = "src/dealerasciicards.csv"
         cards = [x for x in self.dealer]
         ascii = [cards[0].img, cards[0].img1]
         print("=" * 20 + f"{name} Cards" + "=" * 20)
@@ -131,13 +131,13 @@ class Table:
         # IF the passed hand parameter is "player", sets all variables needed to show player cards
         if hand == "player":
             cards = self.player
-            filename = "playerasciicards.csv"
+            filename = "src/playerasciicards.csv"
             name = "Player"
 
         # IF the passed hand parameter is "dealer", sets all variables needed to show dealer cards1
         if hand == "dealer":
             cards = self.dealer
-            filename = "dealerasciicards.csv"
+            filename = "src/dealerasciicards.csv"
             name = "Dealer"
 
         individual_cards = [x for x in cards]
@@ -245,7 +245,6 @@ class Table:
         except ValueError:  # Checks bet amount is interpretable as an int amount
             print("Please enter a valid bet!")
             self.player_bet()
-
 
     def double_down(self) -> None:
         """

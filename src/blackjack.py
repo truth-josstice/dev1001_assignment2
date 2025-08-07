@@ -1,6 +1,6 @@
 # CUSTOM MODULES IMPORT
 
-from functions import (
+from .functions import (
     main_menu, # Main Menu display and input loop
     choose_table, # Initiates Table object during gameplay loop
     progbar, # Simulates task progression
@@ -34,8 +34,8 @@ def mainloop() -> None:
             os.system('clear')
             printslow("This app contains simulated gambling and is intended for users over the age of 18. Please use responsibly.\n") 
             sleep(5)
-            printslow("Thank you for your consideration. Now moving to Main Menu.")
-            sleep(2)
+            printslow("Thank you for your consideration. Press Enter to proceed to Main Menu.")
+            input()
 
             main_menu()  # Display the Main Menu
             sleep(1)  # Delays execution for 1 second to allow player a moment before continuing.
@@ -172,4 +172,12 @@ def mainloop() -> None:
             sleep(1)
 
 # Entry point: Starts the main gameplay loop when the script is run.
-mainloop()
+def main() -> None:
+    """Acts as the launcher for the game logic by calling mainloop when this function is called"""
+
+    mainloop()
+
+
+# Prevents the code being run accidentally when being imported to run_blackjack.py
+if __name__ == "__main__":
+    main()
