@@ -1,16 +1,18 @@
+"""Contains the base logic for running the application"""
+
 # CUSTOM MODULES IMPORT
 
-from functions import (
-    main_menu, # Main Menu display and input loop
-    choose_table, # Initiates Table object during gameplay loop
-    progbar, # Simulates task progression
-    sleep, # Pause execution for automatic display
-    os, # Operating system function for clearing display
-    printslow, # Character by character terminal output
-    player_stats, # List containing player stats
-    player_bet_list, # List containing player bets
-    meme_error, # Custom error message for corrupt or missing player data
-    sys, # System-specific function for clean exit
+from .functions import (
+    main_menu,  # Main Menu display and input loop
+    choose_table,  # Initiates Table object during gameplay loop
+    progbar,  # Simulates task progression
+    sleep,  # Pause execution for automatic display
+    os,  # Operating system function for clearing display
+    printslow,  # Character by character terminal output
+    player_stats,  # List containing player stats
+    player_bet_list,  # List containing player bets
+    meme_error,  # Custom error message for corrupt or missing player data
+    sys,  # System-specific function for clean exit
 )
 
 
@@ -31,7 +33,9 @@ def mainloop() -> None:
     while True:
         try:
             main_menu()  # Display the Main Menu
-            sleep(1)  # Delays execution for 1 second to allow player a moment before continuing.
+            sleep(
+                1
+            )  # Delays execution for 1 second to allow player a moment before continuing.
             os.system("clear")
 
             # Inner loop: Handles the core gameplay loop after Main Menu selection.
@@ -53,8 +57,8 @@ def mainloop() -> None:
 
                     if player_stats[0]["chips"] > 0:
                         # Begin the betting round gameplay.
-                        activetable.player_bet()   # User input prompt for entering bet amount.
-                        activetable.new_deal()     # Deals the initial hands to player and dealer.
+                        activetable.player_bet()  # User input prompt for entering bet amount.
+                        activetable.new_deal()  # Deals the initial hands to player and dealer.
                         activetable.double_down()  # Prompts player to double their initial bet.
                         activetable.player_move()  # Prompts player to input their move based on dealt hand.
 
@@ -66,7 +70,9 @@ def mainloop() -> None:
                             # IF player still has chips remaining
                             # Prompt player if they wish to play another round.
                             # This keeps the gameplay flowing without forcing return to Main Menu after round.
-                            printslow("Play again? ")  # Prompt the player with a slow-printed message for pacing effect.
+                            printslow(
+                                "Play again? "
+                            )  # Prompt the player with a slow-printed message for pacing effect.
 
                             player_bet_list.clear()  # Reset the bet history for next round.
                             # Important: This prevents cummulative stacking of bets between rounds.
@@ -86,7 +92,9 @@ def mainloop() -> None:
                                 else:
                                     # ELSE player chose to continue ('Y'), but table is now out of chips.
                                     # Prints message to display notification to player.
-                                    printslow("This table is out of chips. Please choose another table.")
+                                    printslow(
+                                        "This table is out of chips. Please choose another table."
+                                    )
                                     sleep(2)
                                     os.system("clear")
                                     continue  # Continues loop by returning player to table selection.
@@ -101,7 +109,9 @@ def mainloop() -> None:
                         else:
                             # Player has run out of chips after the round ends.
                             # Forces return to Main Menu as no further betting is possible.
-                            printslow("You are out of chips. Please start a new game.\n")
+                            printslow(
+                                "You are out of chips. Please start a new game.\n"
+                            )
                             player_bet_list.clear()
                             printslow("Returning to Main Menu")
                             sleep(2)
@@ -110,7 +120,9 @@ def mainloop() -> None:
                 else:
                     # ELSE the selected table has no chips available.
                     # Prompt player to select different table.
-                    printslow("This table is out of chips. Please choose another table.")
+                    printslow(
+                        "This table is out of chips. Please choose another table."
+                    )
                     sleep(2)
                     os.system("clear")
                     continue  # Return to table selection loop.
@@ -164,5 +176,13 @@ def mainloop() -> None:
             )
             sleep(1)
 
-# Entry point: Starts the main gameplay loop when the script is run.
-mainloop()
+
+def main() -> None:
+    """Acts as the launcher for the game logic by calling mainloop when this function is called"""
+
+    mainloop()
+
+
+# Prevents the code being run accidentally when being imported to run_blackjack.py
+if __name__ == "__main__":
+    main()

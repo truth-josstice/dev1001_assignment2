@@ -1,17 +1,21 @@
+"""Contains the various functions imported by blackjack.py to handle game logic."""
+
 # Standard Library Imports
-import csv as c # CSV file reading/writing operations
-import json as j # JSON file reading/writing operations
-import os # Operating system interface for clearing display
-import sys # System-specific functions for clean system exit and automatic terminal cursor commands
-from time import sleep # Pause execution for display during application runtime
+import csv as c  # CSV file reading/writing operations
+import json as j  # JSON file reading/writing operations
+import os  # Operating system interface for clearing display
+import sys  # System-specific functions for clean system exit and automatic terminal cursor commands
+from time import sleep  # Pause execution for display during application runtime
 
 # Third Party Library Imports
-import art as a # ASCII art text generation
-import colorama as co # Colour and formatting of terminal text display
-from rich import progress as p # Rich progress bars for status tracking (simulated work time)
+import art as a  # ASCII art text generation
+import colorama as co  # Colour and formatting of terminal text display
+from rich import (
+    progress as p,
+)  # Rich progress bars for status tracking (simulated work time)
 
 # Local/Custom Module Imports
-from custom_lib.playingcards import Deck, Card # Customised Card and Deck classes 
+from custom_lib.playingcards import Deck, Card  # Customised Card and Deck classes
 
 # Sets up empty list to house stats for player and table classes
 player_stats = []
@@ -19,11 +23,11 @@ table_stats = []
 player_bet_list = []
 
 # Declared variables for outside data files
-n_t_stats_json = "newtables_DONOTDELETE.json"
-t_stats_json = "tablestats.json"
-p_stats_json = "playerstats.json"
-dealer = "dealerasciicards.csv"
-player = "playerasciicards.csv"
+n_t_stats_json = "src/newtables_DONOTDELETE.json"
+t_stats_json = "src/tablestats.json"
+p_stats_json = "src/playerstats.json"
+dealer = "src/dealerasciicards.csv"
+player = "src/playerasciicards.csv"
 
 
 class Table:
@@ -114,7 +118,7 @@ class Table:
         """
 
         name = "Dealer"
-        filename = "dealerasciicards.csv"
+        filename = "src/dealerasciicards.csv"
         cards = [x for x in self.dealer]
         ascii = [cards[0].img, cards[0].img1]
         print("=" * 20 + f"{name} Cards" + "=" * 20)
@@ -131,13 +135,13 @@ class Table:
         # IF the passed hand parameter is "player", sets all variables needed to show player cards
         if hand == "player":
             cards = self.player
-            filename = "playerasciicards.csv"
+            filename = "src/playerasciicards.csv"
             name = "Player"
 
         # IF the passed hand parameter is "dealer", sets all variables needed to show dealer cards1
         if hand == "dealer":
             cards = self.dealer
-            filename = "dealerasciicards.csv"
+            filename = "src/dealerasciicards.csv"
             name = "Dealer"
 
         individual_cards = [x for x in cards]
@@ -225,7 +229,7 @@ class Table:
         # Checks if player has enough chips to cover bet
         try:
             if self.player1.chips >= int(bet):
-            
+
                 # IF bet is between min-max table limits, appends to list of bet amounts
                 if int(bet) >= self.min and int(bet) <= self.max:
                     return player_bet_list.append(int(bet))
@@ -234,18 +238,17 @@ class Table:
                 elif int(bet) < self.min or int(bet) > self.max:
                     print(f"Please enter a bet between ${self.min} and ${self.max}")
                     self.player_bet()
-            
+
             else:  # IF player does not have enough chips to cover bet, prints total remaining
-            # chips and re-prompts player
+                # chips and re-prompts player
                 print(
-                f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
+                    f"You only have ${player_stats[0]['chips']} in chips remaining, please change your bet."
                 )
                 self.player_bet()
 
         except ValueError:  # Checks bet amount is interpretable as an int amount
             print("Please enter a valid bet!")
             self.player_bet()
-
 
     def double_down(self) -> None:
         """
@@ -266,10 +269,10 @@ class Table:
                 if dd.lower() == "n":
                     return
 
-                else: # IF user has entered an invalid option
+                else:  # IF user has entered an invalid option
                     print("Please select either Y or N")
 
-        else: # IF player does not have enough chips to double the bet, does not prompt user input
+        else:  # IF player does not have enough chips to double the bet, does not prompt user input
             print("You don't have enough chips to double down.")
             return
 
@@ -296,7 +299,7 @@ class Table:
                         if self.scores("player") > 21:
                             return
 
-                    else: # IF player has the maximum of five cards currently held
+                    else:  # IF player has the maximum of five cards currently held
                         print("You cannot draw more than five cards!")
                         return
 
@@ -305,7 +308,7 @@ class Table:
                     print("\n" + "Player stands." + "\n")
                     self.dealer_ai()
                     break
-                
+
                 # IF user makes a choice other than those available
                 case _:
                     print("Please choose a valid move (either hit or stand.)")
@@ -332,7 +335,7 @@ class Table:
             )
             return
 
-        else: # IF dealer does not have blackjack, initiates dealer decision making
+        else:  # IF dealer does not have blackjack, initiates dealer decision making
             self.ai_threshold()
 
     def ai_threshold(self) -> None:
@@ -373,11 +376,11 @@ class Table:
                     printslow("Dealer stands!\n")
                     return
 
-                else: # IF dealer reaches maximum and no score conditions are met dealer stands
+                else:  # IF dealer reaches maximum and no score conditions are met dealer stands
                     printslow("Dealer stands.\n")
                     return
 
-            else: # Once maximum is reached, returns to gameplay loop
+            else:  # Once maximum is reached, returns to gameplay loop
                 return
 
     def results(self, bet: int) -> str:
@@ -474,7 +477,7 @@ class NoLimit(Table):
                     print(f"Please enter a valid bet!")
                     self.player_bet()
 
-            else: # IF player does not have enough chips to meet table minimum
+            else:  # IF player does not have enough chips to meet table minimum
                 print(
                     f"You only have ${player_stats[0]['chips']} remaining in chips. Please choose a lower bet."
                 )
@@ -781,7 +784,7 @@ def main_menu() -> None:
             os.system("clear")
             return custom_quit()
 
-        else: # IF user input is not a valid choice
+        else:  # IF user input is not a valid choice
             printslow("Invalid selection, please try again.\n")
 
 
@@ -833,7 +836,7 @@ def choose_table() -> Table | NoLimit:
     mid = Table(*[x for x in table_stats[0][1].values()])
     high = Table(*[x for x in table_stats[0][2].values()])
     nolimit = NoLimit(*[x for x in table_stats[0][3].values()])
-    
+
     printslow(
         """======== Table Menu ========
     1. Low Roller's Table
@@ -875,7 +878,7 @@ def choose_table() -> Table | NoLimit:
             os.system("clear")
             main_menu()
 
-        else: # IF user input is not a valid choice
+        else:  # IF user input is not a valid choice
             print("Invalid selection, please select a table from the above.")
 
 
@@ -968,11 +971,11 @@ Enter your choice: """
                         os.system("clear")
                         sys.exit()
 
-                    else: # IF user input is an invalid choice
+                    else:  # IF user input is an invalid choice
                         printslow("Invalid input, please try again.\n")
 
         # IF user chooses not to save sends confirmation message
-        elif save.lower() == "n": 
+        elif save.lower() == "n":
             printslow("Are you sure? ")
             check = input("Y/N: ")
 
@@ -984,10 +987,10 @@ Enter your choice: """
             elif check.lower() == "n":
                 continue
 
-            else: # IF user input is not a valid choice
+            else:  # IF user input is not a valid choice
                 printslow("Please enter either Y or N")
 
-        else: # IF user input is not a valid choice
+        else:  # IF user input is not a valid choice
             printslow("Please enter either Y or N")
 
 
