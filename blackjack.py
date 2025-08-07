@@ -30,6 +30,13 @@ def mainloop() -> None:
 
     while True:
         try:
+            # Added a warning in regard to intended audience of the project as per ACM 1.2 Avoid Harm
+            os.system('clear')
+            printslow("This app contains simulated gambling and is intended for users over the age of 18. Please use responsibly.\n") 
+            sleep(5)
+            printslow("Thank you for your consideration. Now moving to Main Menu.")
+            sleep(2)
+
             main_menu()  # Display the Main Menu
             sleep(1)  # Delays execution for 1 second to allow player a moment before continuing.
             os.system("clear")
