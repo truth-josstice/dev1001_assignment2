@@ -1,6 +1,6 @@
 # Class and Function Usage
 
-For more detailed docstrings please check the .py files in the '/src/' folder.
+For more detailed docstrings please check the functions.py and blackjack.py files in the '/src/' folder.
 
 ## Main Gameplay Loop
 
