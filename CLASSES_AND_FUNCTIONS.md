@@ -1,5 +1,7 @@
 # Class and Function Usage
 
+For more detailed docstrings please check the .py files in the '/src/' folder.
+
 ## Main Gameplay Loop
 
 - ```mainloop()``` - Core game loop managing all gameplay flows and error handling.
@@ -49,7 +51,7 @@
 ## Custom Classes
 
 This app contains two custom classes, Table and Player, as well as the NoLimit Table subclass.
-    
+
 ```Table``` is a specific table with a finite amount of chips, minimum and maximum bet limits, and a transparent rule set based on specific blackjack standards.  
 ```Table``` attributes:
 
@@ -86,23 +88,56 @@ This app contains two custom classes, Table and Player, as well as the NoLimit T
 
 *All Table methods take **self** as a param*
 
-- ```new_table()``` - Sets up default table statistics by clearing and overwriting the local ```table_stats``` list with Table object params.
+- ```new_table()``` - Sets up custom table object by clearing and overwriting the local ```table_stats``` list with Table object params.
   - Parameters:
     - None
   - Returns:
     - ```None``` (modifies local ```table_stats``` list)
+  - Example:
+
+```python
+table_stats = []
+
+example_table = Table("Example", 100, 20, 1, "hit")
+
+new_table(example_table)
+
+table_stats = [
+    {
+      "name": "Example", 
+      "bank": 100, 
+      "max_bet": 20, 
+      "min_bet": 1, 
+      "r17": "hit"
+    }
+  ]
+```
 
 - ```new_deal()``` - Deals the opening hand to dealer and player (using ```Deck.draw_n()``` from ```playingcards``` package) and displays in ASCII format.
   - Parameters:
     - None
   - Returns:
     - ```None``` (prints directly to console)
+  - Example output:  
+
+![An ASCII representation of the first hand in a blackjack game.](images/new-deal-output.png)
 
 - ```t_rules()``` - Prints the current Table object rules using Table object params.
   - Parameters:
     - None
   - Returns:
     - ```None``` (prints directly to console)
+  - Example output:
+```
+=====  Low Roller's Table Rules  =====
+        Hands cannot be split.
+        Deck size: 104.
+        Chips to win: 200.
+        Maximum bet: $20.
+        Minimum bet: $5.
+        This dealer will hit on 17.
+======================================
+```
 
 - ```first_hand()``` - Displays the dealer's first card rank and suit in ASCII format (using ```asciicards()``` function), and keeps second card hidden.
   - Parameters:
@@ -123,6 +158,21 @@ This app contains two custom classes, Table and Player, as well as the NoLimit T
     - cards(```list```) - A list of Card objects
   - Returns:
     - ```None``` (prints directly to console)
+  - Example:
+
+```python
+# Example usage:
+player_name = "Player 1"
+
+blackjack_hand = ["Ace", "King"]  # Value = 21
+eval_hand(player_name, 21, blackjack_hand)  # Output: Player 1 has Blackjack! (in green)
+
+bust_hand = ["10", "7", "5"]  # Value = 22
+eval_hand(player_name, 22, bust_hand)  # Output: Player 1 Bust! (in red)
+
+regular_hand = ["10", "7"]  # Value = 17
+eval_hand(player_name, 17, regular_hand)  # No output (doesn't meet either condition)
+```
 
 - ```scores(hand)``` - Assigns specific points to each card as per blackjack rules, converts any held Aces to wild (11 or 1) depending on total score to avoid busting.
   - Parameters:
@@ -160,12 +210,41 @@ scores("player")
     - None
   - Returns:
     - ```None``` (prints directly to console)
+  - Example Usage:
+
+```python
+# Scenario 1:
+dealer_hand = ['Ace', 'King'] # Dealer has blackjack
+# Returns formatted string and ends turn.
+
+# Scenario 2:
+dealer_hand = ['5', 'King'] # Dealer does not have blackjack
+# Returns None, calls ai_threshold() function to hand decision making
+```
 
 - ```ai_threshold()``` - Implements dealer's hit/stand decision logic based on table rules and dealer score (using ```scores()```) and prints message for dealer's chosen move.
   - Parameters:
     - None
   - Returns:
     - ```None``` (prints directly to console)
+  - Example:
+
+```python
+table = Table("Example", 100, 20, 1, "hit")
+
+# Starting hand for dealer
+dealer_hand = ['5', 'King'] # Score 15, Length 2
+
+table.ai_threshold() # Initiates a loop of decision making based on score
+
+#AI checks for blackjack or 17, conditions are not met, dealer draws another cad
+dealer_hand = ['5', 'King', '2'] # Score 17, Length 3
+
+# Table r17 is "hit", dealer must hit on 17, dealer draws another card
+dealer_hand = ['5', 'King', '2', '10'] # Score 27, Bust
+
+# Dealer has over 21, loop ends
+```
 
 - ```results(bet)``` - Evaluates hand outcomes and updates player_stats list accordingly depending on win/loss/tie conditions, displays the results in formatted string.
   - Parameters:
@@ -174,9 +253,9 @@ scores("player")
     - ```str``` - Formatted result message
   - Example output:
 
-```
+```python
 "Blackjack earns extra chips! You won $30!\n"
-(From a $20 bet at 1.5x payout)
+#(From a $20 bet at 1.5x payout)
 
 "Player 19 beats dealer 17. You won $20!"
 

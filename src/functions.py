@@ -61,10 +61,9 @@ class Table:
         self.min = min_bet
         self.r17 = r17
         self.player1 = choose_player()
-        self.player1 = choose_player()
 
     def new_table(self) -> None:
-        """Saves new table data to the player_stats list."""
+        """Saves new table data to the table_stats list."""
 
         table_stats.clear()
         table_stats.append(
