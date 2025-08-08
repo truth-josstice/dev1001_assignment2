@@ -119,7 +119,7 @@ This app contains two custom classes, Table and Player, as well as the NoLimit T
 
 *All Table methods take **self** as a param*
 
-- ```new_table()``` - Sets up custom table object by clearing and overwriting the local ```table_stats``` list with Table object params.
+- ```new_table()``` - Allows the addition of custom table objects to the local by clearing and overwriting the local ```table_stats``` list with Table object params. If users want to create different tables, they will need to alter the choose_table() function.
   - Parameters:
     - None
   - Returns:
@@ -447,13 +447,26 @@ Many of the global functions interact with external file data, either in CSV or 
   - Returns:
     - ```None``` (returns to ```main_menu()``` after interaction)
 
-- ```choose_table()``` - A table selection menu which prompts for user input and creates a ```Table``` object using list comprehension.
+- ```choose_table()``` - A table selection menu which prompts for user input and creates a ```Table``` object within the main gameplay loop using list comprehension.
   - Parameters:
     - None
   - Returns:
     - ```Table | NoLimit``` object (selected table instance)
+  - Example:
 
-- ```choose_player()``` - Creates a ```Player``` object based on currently saved player data using list comprehension.
+```python
+# Example Table objects
+table_1 = Table("Example", 100, 20, 5, "hit")
+table_2 = Table("Example 2", 200, 50, 20, "stand")
+
+# IF user input is "Example"
+activetable = table_1
+
+# Returns table_1 as table object within the main gameplay loop 
+# until player leaves the table
+```
+
+- ```choose_player()``` - Creates a ```Player``` object within main gameplay loop based on currently saved player data using list comprehension.
   - Parameters:
     - None
   - Returns:

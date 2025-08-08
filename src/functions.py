@@ -63,7 +63,10 @@ class Table:
         self.player1 = choose_player()
 
     def new_table(self) -> None:
-        """Saves new table data to the table_stats list."""
+        """Saves any custom or new table object data to the table_stats list.
+        If users want to create custom tables, they will need to be added to the 
+        choose_table() function variables via list comprehension.
+        """
 
         table_stats.clear()
         table_stats.append(
