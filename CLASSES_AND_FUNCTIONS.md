@@ -2,6 +2,8 @@
 
 For more detailed docstrings please check the functions.py and blackjack.py files in the '/src/' folder.
 
+---
+
 ## Main Gameplay Loop
 
 - ```mainloop()``` - Core game loop managing all gameplay flows and error handling.
@@ -38,6 +40,8 @@ For more detailed docstrings please check the functions.py and blackjack.py file
     - Player chip balance
     - Play-again decisions
 
+---
+
 ## Imported Classes
 
 ```Deck``` from ```playingcards``` package is a collection of cards that form a standard 52 card deck, in some cases this has been modified to 104 cards.
@@ -48,11 +52,14 @@ For more detailed docstrings please check the functions.py and blackjack.py file
 
 ```Card``` from ```playingcards``` is a card object with params of suit, rank and value which assists with scoring and identification of card objects.
 
+---
+
 ## Custom Classes
 
 This app contains two custom classes, Table and Player, as well as the NoLimit Table subclass.
 
-```Table``` is a specific table with a finite amount of chips, minimum and maximum bet limits, and a transparent rule set based on specific blackjack standards.  
+```Table``` is a specific table with a finite amount of chips, minimum and maximum bet limits, and a transparent rule set based on specific blackjack standards.  The ```Table``` class is the parent for the ```NoLimit``` subclass.  
+
 ```Table``` attributes:
 
 ```python
@@ -68,7 +75,29 @@ This app contains two custom classes, Table and Player, as well as the NoLimit T
     dealer: list[Card]  # Dealers current hand as a list of Card objects
 ```
 
-```NoLimit``` Table subclass attributes are the same as above, but have null values for params which are no longer applicable, as well as custom functions to account for these changes.
+---
+
+```NoLimit``` is a child class of the ```Table``` subclass. 
+
+```NoLimit``` attributes:
+
+```python
+# Class-level type annotations. Details what attributes the class has, and type of attribute.
+    name: str  # Name of each table (e.g. High Stakes), used for display/tracking tables
+    min: int  # Minimum bet allowed, used to validate players bets
+    r17: str  # Rule to decide dealer behavior upon drawing 17 (e.g Hit or Stand)
+    deck: Deck  # Card Deck object created from playingcards Deck class
+    player1: "Player"  # Player object created from Player class used for defining player data
+    player: list[Card]  # Players current hand as a list of Card objects
+    dealer: list[Card]  # Dealers current hand as a list of Card objects
+```
+
+```NoLimit``` attributes no longer include:
+
+- ```bank``` - removed as this table allows for unlimited play
+- ```max``` - removed as this table has no bet limits
+
+---
 
 ```Player``` creates the player instance based on user input of name, with default values for starting amount of chips.  
 ```Player``` attributes:
@@ -83,6 +112,8 @@ This app contains two custom classes, Table and Player, as well as the NoLimit T
     chip_won: int  # Total chips won by player
     chip_lost: int  # Total chips lost by player
 ```
+
+---
 
 ### ```Table``` Class Methods
 
@@ -128,7 +159,8 @@ table_stats = [
   - Returns:
     - ```None``` (prints directly to console)
   - Example output:
-```
+
+```text
 =====  Low Roller's Table Rules  =====
         Hands cannot be split.
         Deck size: 104.
@@ -276,7 +308,11 @@ dealer_hand = ['5', 'King', '2', '10'] # Score 27, Bust
     update_stats(max_bet=200) # adjusts bet limits
 ```
 
+---
+
 ### ```NoLimit``` Subclass Methods
+
+*All NoLimit methods are inherited from the Table parent class, with the below altered due to removal of attributes for ```bank``` and ```max```*.
 
 - ```t_rules()``` - Displays customized table rules whilst removing the parent class params which are no longer applicable.
   - Parameters:
@@ -295,6 +331,8 @@ dealer_hand = ['5', 'King', '2', '10'] # Score 27, Bust
     - ```bet``` (int) - User's input bet amount
   - Returns:
     - ```str``` - Formatted result message
+
+---
 
 ### ```Player``` Class Methods
 
@@ -347,6 +385,8 @@ player.update_stats(
     Total chips lost: $800
 ========================================
 ```
+
+---
 
 ### Global Functions
 
