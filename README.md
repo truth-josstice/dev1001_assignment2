@@ -38,6 +38,7 @@ This project was developed as a learning assessment, it showcases my foundationa
   - [Dependencies: Third Party Packages and Licenses](#dependencies-third-party-packages-and-licenses)
   - [Ethical Considerations](#ethical-considerations)
     - [Australian Support Services](#australian-support-services)
+  - [Privacy Policy](#privacy-policy)
   - [References and Resources](#references-and-resources)
 
 ---
