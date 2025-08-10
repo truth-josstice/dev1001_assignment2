@@ -82,6 +82,7 @@ The app simulates the classic card game **Blackjack**, providing an interactive 
 > ⚠️ **IMPORTANT NOTICE:**
 >
 > - This application is intended for **educational and personal entertainment purposes only**.
+> - This application is intended for users **over the age of 18**.
 > - It is a **non-commercial simulation** designed to demonstrate coding concepts and responsible software design.
 > - **No real money is involved**, and it is not intended to promote or encourage gambling.
 > - The project encourages **responsible gameplay** and discourages excessive or compulsive play by avoiding addictive mechanics and clearly communicating its purpose as an educational tool.
