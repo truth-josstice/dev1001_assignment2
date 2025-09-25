@@ -1,4 +1,4 @@
-# Blackjack of Truth and Josstice!
+<img width="1898" height="1107" alt="image" src="https://github.com/user-attachments/assets/fa5a3fc1-e3f3-4546-917b-ae84fd2ec723" /># Blackjack of Truth and Josstice!
 
 ![Blackjack of Truth and Josstice App Banner](./images/blackjack-app-cover.png)
 
@@ -258,5 +258,10 @@ Ethical Considerations References:
 5. [Parliamentary Report - Simulated Gambling](https://www.aph.gov.au/Parliamentary_Business/Committees/House/Social_Policy_and_Legal_Affairs/Onlinegamblingimpacts/Report/Chapter_6_-_Simulated_gambling_and_gambling-like_activities)
 
 ---
+
+## Contributors
+
+- [JordanLeal-Walker](https://github.com/jordanleal12)
+- [NhiHuynh](https://github.com/lulu-codes)
 
 [⇧ Back to Top](#blackjack-of-truth-and-josstice)
