@@ -1,4 +1,4 @@
-<img width="1898" height="1107" alt="image" src="https://github.com/user-attachments/assets/fa5a3fc1-e3f3-4546-917b-ae84fd2ec723" /># Blackjack of Truth and Josstice!
+# Blackjack of Truth and Josstice!
 
 ![Blackjack of Truth and Josstice App Banner](./images/blackjack-app-cover.png)
 
